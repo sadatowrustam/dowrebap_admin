@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <style>
+        .suratHeader{
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %>
+            </div>
+        </div>
+    <form action="/admin/partniyorlar" method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box imgBox">
+                        <div class="boxHeader">Maglumat giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Telefon nomeri:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header">
+                            <label class="mazmuny" for="topTa">Paroly:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header">
+                        </div>
+                        
+                    </div>
+                </div>
+            <div class="submitCon">
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+        </div>
+    </form>
+    </div>
+ <!-- picture show when i choose from file -->
+ <script>
+    linkActive(1)
+
+
+    var logo=[]
+    function takeLogo(e){
+        logo.push(e.target.files[0]);
+        var logoLabel = document.querySelector(".logoPlace label");
+        logoLabel.textContent = e.target.files[0].name;
+    }
+
+    var submit = document.querySelector("#identifier");
+    submit.addEventListener("submit",async function(e){
+        e.preventDefault();
+        var inputs = document.querySelectorAll("#identifier input");
+        var data = {
+            name:inputs[0].value,
+            password:inputs[1].value,
+        }
+        var res = await dataSend(data,'<%=host%>/admin/seller/add');
+        if(res.seller_id){
+            location.replace('/seller');
+        }
+        
+    })
+</script>
+
+ 
+
+</body>
+</html>
+
+

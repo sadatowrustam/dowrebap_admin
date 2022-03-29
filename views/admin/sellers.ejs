@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+
+        <div class="adminTable">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>Ady</td>
+                    <td>Surady</td>
+                    <td>Open/edit</td>
+                    <td>Aktiw</td>
+                    <td>Poz</td>
+                  </tr>
+                
+                <% if(data.seller.length>0){ %> 
+                <% for( let i = 0; i < data.seller.length; i++ ) { %>
+                    <tr>  
+                        <td style="max-width: 400px;"><%=data.seller[i].name%></td>
+                        <td><img style="width: 100px" src="http://localhost:5001/<%=data.seller[i].image%>" alt="surat yok"></td>
+                        <td><a href="/seller/getOne/<%=data.seller[i].seller_id%>"><img style="width: 25px" src="/pictures/icon/edit.svg" alt=""></a></td>
+                        <% if (data.seller[i].isActive) { %>
+                            <td><input id="checkbox" type="checkbox" checked onclick="isActive('<%=data.seller[i].seller_id%>','<%=false%>')"></td>
+                        <% } else{%>
+                            <td><input id="checkbox" type="checkbox" onclick="isActive('<%=data.seller[i].seller_id%>','<%=true%>')"></td>
+                            <% } %> 
+                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/seller/delete/<%=data.seller[i].seller_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
+                    </tr>
+                    <% }} %>
+                </tbody>
+              </table>
+        </div>
+    </div> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+    <script>
+        async function isActive(seller_id,isActive){
+            console.log(isActive);
+                let data={
+                    isActive,
+                    seller_id
+                }
+            var res = await dataSend(data,'<%=host%>/sellers/isActive');
+            if(res.status){
+                alert("Uytgedildi")
+            }
+        }
+    </script>
+    <script>dropActive(0,3);</script>
+</body>
+</html>

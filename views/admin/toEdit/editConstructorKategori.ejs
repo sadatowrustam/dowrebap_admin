@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <style>
+        .boxHeader{
+            margin-bottom: 20px;
+        }
+        .addHabar .box{
+            width: 100% !important;
+        }
+        .headerCon{
+            width: 50% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form  method="POST" id="identifier">
+        <div class="adminTable addHabar">
+            <div class="box">
+                <div class="boxHeader">Türkmençe ady:</div>
+                <div class="headerCon">
+                    <input type="text" name="tm" class="header" value="<%=data.name.TM%>">
+                </div>                
+            </div>
+            <div class="box">
+                <div class="boxHeader">Rusça ady:</div>
+                <div class="headerCon">
+                    <input type="text" name="ru" id="topTa" class="header" value="<%=data.name.RU%>">
+                </div>
+            </div>
+            <div class="box">
+                <div class="boxHeader">Iňlisçe ady:</div>
+                <div class="headerCon">
+                    <input type="text" name="en" id="topTa" class="header" value="<%=data.name.EN%>">
+                </div>
+            </div>
+            <input class="save" type="submit" value="Ýatda sakla">
+        </div>
+    </form>
+    </div>
+    <script>linkActive(2)</script>
+
+    <!-- formdan maglumat jemlemek -->
+    <script>
+        var submit = document.querySelector('#identifier');
+        var oneTime = true;
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier input");
+                var data = {
+                    tm:inputs[0].value,
+                    ru:inputs[1].value,
+                    en:inputs[2].value
+                }
+                
+                var res = await dataSend(data,'<%=host%>/constructor/edit?id=<%=id%>');
+                if(res.status == 200){
+                    location.replace('/admin/constructor')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+

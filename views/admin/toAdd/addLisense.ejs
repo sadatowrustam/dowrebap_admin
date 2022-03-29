@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form action="/admin/ygtyyarnama" method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box">
+                        <div class="boxHeader">Türkmençe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Mazmunyň headeri:</label>
+                            <input type="text" name="headerTM" class="header inputs">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools"></textarea>
+                        </div>
+                    
+                    </div>
+                    <div class="box imgBox">
+                        <div class="headerCon">
+                            <div class="suratHeader">
+                                <label for="">Faýl [PDF] giriziň:</label>
+                                <label for="sowdaSurat">Faýl goşmak <img src="/pictures/icon/plus.svg" alt=""></label>
+                                <input type="file" onchange="takeImg(event)" id="sowdaSurat" style="display: none;">
+                            </div>
+                        </div>
+                        <label for="" class="imgsCon">
+                            <!-- js bilen bir tag gelyar surat yok bolondo default surat gelyan -->
+                            <div class="imgCon pdfCon">
+                                <!-- js bilen doldurylyar surat goyulyar -->
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="box">
+                        <div class="boxHeader">Rusça giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header inputs">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools2"></textarea>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="boxHeader">Iňlisçe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerEN" id="topTa" class="header inputs">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+            <div class="submitCon">
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+        </div>
+    </form>
+    </div>
+
+    
+
+    <!-- picture show when i choose from file -->
+    <script>
+        var imgCount = 0;
+        var delCount = 0;
+        var imgs = [];
+        function takeImg(event){
+            if(event.target.files[0] != undefined){
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.innerHTML += `
+                                    <div class="div pdf ${delCount}">
+                                        <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                        <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                        <div class="name"></div>
+                                    </div>`;
+                
+                var img = document.querySelectorAll(".imgCon .div .name");
+
+                img[imgCount].textContent = event.target.files[0].name;
+                var obj = {
+                    id:delCount,
+                    event:event.target.files[0]
+                }
+                imgCount+=1;
+                delCount+=1;
+                imgs.push(obj);
+                imgLen();
+            }
+        }
+
+        function delImg(san){
+            var imgCon = document.querySelectorAll(".imgCon .div");
+            for(var i = 0; i<imgs.length; i++){
+                if(imgs[i].id == san){
+                    imgs.splice(i,1);
+                }
+            }
+
+            for(var i = 0; i<imgCon.length ; i++){
+                var a = imgCon[i].classList.contains(san);
+                if(a){
+                    imgCon[i].remove();
+                    break;
+                }
+            }
+            
+            imgCount-=1;
+            imgLen();
+        }
+
+        var bool = false;
+        function imgLen(){
+            if(imgs.length==0){
+                var imgsCon = document.querySelector(".imgsCon");
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.style.height = "0";
+                var old = imgsCon.innerHTML;
+                imgsCon.innerHTML = `<div class="noneImg">
+                                        <img style="filter: invert(1); opacity:0.7; width:30px" src="/pictures/icon/pdf.svg" alt="">
+                                    </div>`+old;
+                bool = true;
+            }else if(imgs.length == 1 && bool){
+                var imgNone = document.querySelector(".noneImg");
+                imgNone.remove();
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.style.height = "200px";
+                bool = false;
+            }
+        }
+        imgLen();
+
+
+        var oneTime = true;
+        var submit = document.querySelector("#identifier");
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier .inputs");
+                var content = tinymce.get("image-tools").getContent();
+                var content2 = tinymce.get("image-tools2").getContent();
+                var content3 = tinymce.get("image-tools3").getContent();
+                var data = {
+                    tmheader:inputs[0].value,
+                    ruheader:inputs[1].value,
+                    enheader:inputs[2].value,
+                    text:content,
+                    text2: content2,
+                    text3:content3,
+                }
+
+             
+
+                var arr = []
+                for(var i = 0; i<imgs.length; i++){
+                    arr.push(imgs[i].event);
+                }
+                console.log(arr)
+                var res = await dataSend(data,'<%=host%>/menu/addLicense');
+                if(typeof(res.id) == 'number'){
+                    if(arr.length>0){
+                        var data = await imgSend(arr,'<%=host%>/menu/addLicenseFile?id='+res.id);
+                        if(data.status == 200){
+                            location.replace('/admin/ygtyyarnama');
+                        }
+                    }else{
+                        location.replace('/admin/ygtyyarnama')
+                    }
+                }
+            }
+            
+        })
+    </script>
+
+    
+<script src='https://cdn.tiny.cloud/1/hpf9h4802a6gu20q61xonxq5tg2r8ot8qw5bmkjuseuw4s9i/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+<script src="/scripts/js/component/tiny.js"></script>
+ 
+   <!-- for left drop down -->
+<script>
+    dropActive(2,6);
+</script>
+
+</body>
+</html>
+
+

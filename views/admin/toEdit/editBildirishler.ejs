@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <style>
+        .choosenTeg{
+            margin-top: 20px;
+            width: 50%;
+        }
+        .choosenTeg div{
+            margin-top: 10px;
+            background: #585962;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .choosenTeg div img{
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %>
+            </div>
+            <div style="display: flex;">
+                <div class="addKategori" style="margin-right: 20px;">
+                    Teg goşmak
+                    <img src="/pictures/icon/plus.svg" alt="plus">
+                </div>
+                <div class="addKategori2 addKategori">
+                    Teg pozmak
+                    <img src="/pictures/icon/minus.svg" alt="plus">
+                </div>
+            </div>
+        </div>
+    <form action="" method="POST" id="identifier">
+        <div class="adminTable addHabar">
+                <div class="box">
+                    <div class="boxHeader">Türkmençe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="a">Mazmunyň headeri:</label>
+                        <input type="text" name="headerTM" id="a" required class="header inputs" value="<%= data.header.TM %>">
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <textarea id="image-tools"></textarea>
+                    </div>
+                
+                </div>
+                <div class="box imgBox">
+                    <div class="boxHeader">Suraty giriziň</div>
+                    <div class="mazmun">Suraty giriziň:</div>
+                    <div class="inputs">
+                        <p><input type="file" accept="image/*" name="image" id="img" onchange="loadFile(event)" style="display: none;"></p>
+                        <label class="imgLbCon" for="img"><img id="output" width="100%" height="100%" src="<%= host %>/events/<%= data.pic %>" /></label>
+                    </div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="ady">Ady:</label>
+                        <input type="text" name="ady" id="ady" class="header inputs" required value="<%= data.name %>">
+                    </div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="topTa">Täzelikler topary:</label>
+                        <input type="text" name="tazeliklerTopary" id="topTa" class="header inputs" required value="<%= data.topar %>">
+                    </div>
+                    <div class="extraInputs" style="justify-content: space-between;">
+                        
+                            <div for="" class="select" style="width: auto; margin-right: 20px;">
+                                <div  style="float: none; min-width: 100%;">
+                                    T/t-ny saýlan:
+                                </div>
+                                <select name="" id="teg" class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
+                                    <option value="" style="display: none;">Teg Saýlaň</option>
+                                    <% for( let i = 0; i < tags.length; i++ ) { %>
+                                        <option value="<%= tags[i].TM %>"><%= tags[i].TM %> </option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            
+                        <div class="date">
+                            <div class="name">M.girizilen senesi:</div>
+                            <input type="date" name="date" class="inputs" required value="<%= data.date %>">
+                        </div>
+                        <div class="ishjen">
+                            <div class="head">Işjeň:</div>
+                            <% if (data.active=="true") { %>
+                                <input type="checkbox" class="inputs" checked name="habarIshjen" id="">
+                            <% }else{ %>
+                                <input type="checkbox" class="inputs" name="habarIshjen" id="">
+                            <% } %> 
+                        </div>
+                    </div>
+
+                    <div class="choosenTeg">
+                    </div>
+                
+
+                <textarea name="text" style="display: none;" id="hiddenArea" cols="30"  rows="10"></textarea>
+                <textarea name="text2" id="hiddenArea" style="display: none;" cols="30"  rows="10"></textarea>
+                <textarea name="text3" id="hiddenArea" cols="30" style="display: none;" rows="10"></textarea>
+            </div>
+            <div class="box">
+                <div class="boxHeader">Rusça giriziň</div>
+                <div class="headerCon">
+                    <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                    <input type="text" name="headerRU" id="topTa" class="header inputs" required value="<%= data.header.RU %>">
+                </div>
+                <div class="mazmun">Mazmuny:</div>
+                <div class="editorCon">
+                    <textarea id="image-tools2"></textarea>
+                </div>
+            </div>
+            <div class="box">
+                <div class="boxHeader">Iňlisçe giriziň</div>
+                <div class="headerCon">
+                    <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                    <input type="text" name="headerEN" id="topTa" class="header inputs" required value="<%= data.header.EN %>">
+                </div>
+                <div class="mazmun">Mazmuny:</div>
+                <div class="editorCon">
+                    <textarea id="image-tools3"></textarea>
+                </div>
+            </div>
+            <input class="save" type="submit" value="Ýatda sakla">
+    </form>
+    </div>
+
+    
+    <div class="bg" style="display: none;"></div>
+    <div class="kategoriPopup" style="display: none;">
+        <div class="head">Täze giriziljek tegiň adyny giriziň </div>
+        <form action="" method="POST" class="kategori">
+            <label for="tm">Turkmençe</label>
+            <input autocomplete="off"  type="text" name="tm" id="tm" required>
+            <label for="ru">Rusça</label>
+            <input autocomplete="off"  type="text" id="ru" name="ru" required>
+            <label for="en">Iňlisçe</label>
+            <input autocomplete="off" type="text" id="en" name="en" required>
+            <input class="tegSubmit" type="submit" value="Ýatda sakla">
+        </form>
+    </div>
+
+    <div class="bg2 bg" style="display: none;"></div>
+    <div class="kategoriPopup2 kategoriPopup" style="display: none;">
+        <div class="head">Teg pozmak</div>
+        <% for( let i = 0; i < tags.length; i++ ) { %>
+            <div  class="element" ><%= tags[i].TM%><img onclick="popupDel(this,'<%= tags[i].id %>','<%= host %>')" src="/pictures/icon/minus.svg" alt=""></div>
+        <% } %>
+    </div>
+
+    <div class="txt" style="display: none;"><%= data.body.TM %></div>
+    <div class="txt" style="display: none;"><%= data.body.RU %></div>
+    <div class="txt" style="display: none;"><%= data.body.EN %></div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+
+    <!-- selectden saylanany ashakda gorkezmek -->
+    <script>
+        var tegs = "<%=data.tags%>";
+        tegs = tegs.split(",");
+
+        for(var i =0; i<tegs.length;i++){
+            var choosen = document.querySelector(".choosenTeg");
+            choosen.innerHTML+=`
+                    <div><span>${tegs[i]}</span><img onclick="delArrTeg('${tegs[i]}',this)" src="/pictures/icon/minus.svg" alt=""></div>
+                `
+        }
+
+        var teg = document.querySelector("#teg");
+        teg.addEventListener("change",function(){
+            var choosen = document.querySelector(".choosenTeg");
+            var goshma = false;
+            for(var i = 0; i<tegs.length;i++){
+                if(tegs[i] == teg.value){
+                    goshma = true;
+                    break;
+                }
+            }
+            if(!goshma){
+                tegs.push(teg.value);
+                choosen.innerHTML+=`
+                    <div><span>${teg.value}</span><img onclick="delArrTeg('${teg.value}',this)" src="/pictures/icon/minus.svg" alt=""></div>
+                `
+            }
+        })
+
+        function delArrTeg(teg,thiss){
+            for(var i = 0; i<tegs.length; i++){
+                if(teg == tegs[i]){
+                    tegs.splice(i,1);
+                }
+            }
+            thiss.parentNode.style.display = "none";
+        }
+
+    </script>
+
+    <!-- formdan maglumatlary yygnamak -->
+    <script>
+        var form = document.querySelector("#identifier");
+        var id = '<%=data.id%>'
+        var img;
+        var loadFile = function(event,el) {
+            var image = document.querySelector('#output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.width = "100%";
+            image.style.height = "100%";
+            img = document.querySelector(".inputs p input");
+            img = img.files[0];
+        }; 
+
+        var oneTime = true;
+        form.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier .inputs");
+                var content = tinymce.get("image-tools").getContent();
+                var content2 = tinymce.get("image-tools2").getContent();
+                var content3 = tinymce.get("image-tools3").getContent();
+
+                var data = {
+                    text: content,
+                    text2: content2,
+                    text3: content3,
+                    tag:[],
+                    headerTM:inputs[0].value,
+                    headerRU:inputs[6].value,
+                    headerEN:inputs[7].value,
+                    date:inputs[4].value,
+                    active:inputs[5].checked,
+                    name:inputs[2].value,
+                    topar:inputs[3].value
+                }
+                
+                for(var i = 0; i<tegs.length; i++){
+                    data.tag[i] = tegs[i];
+                }
+    
+                var arr = [];
+                arr.push(img);
+    
+                var res = await dataSend(data,`${link}/events/edit?id=${id}`);
+                if(tegs.length == 0){
+                    alert("Teg saýlaň!!!");
+                    oneTime = true;
+                }else{
+                    if(arr[0] == undefined){
+                        console.log("IShledi");
+                        location.replace("/admin/bildirishler");
+                    }else{
+                        if(typeof(res.newsId)=="string"){
+                            var res2 = await imgSend(arr,`${link}/events/addPicture?id=${res.newsId}`);
+                            if(res2.status == 200){
+                                location.replace("/admin/bildirishler")
+                            }
+                        }else{
+                            console.log("Ishlemedi");
+                        }
+                    }
+                }
+            }
+        })
+
+    </script>
+
+    <!-- Teg goshmak -->
+    <script>
+        var link = "<%=host%>"
+        var tegSubmit = document.querySelector(".kategori");
+        
+        tegSubmit.addEventListener("submit",async function(e){
+            e.preventDefault();
+            var tm = document.querySelector("form.kategori #tm").value;
+            var ru = document.querySelector("form.kategori #ru").value;
+            var en = document.querySelector("form.kategori #en").value;
+            
+            var data={
+                tm,
+                ru,
+                en
+            }
+            
+            var status = await dataSend(data,`${link}/news/tags`);
+            console.log(status);
+            if(status.status == 200){
+                location.reload();
+            }
+        })
+    </script>
+
+    <!-- drop active etmek ucin -->
+    <script>
+        dropActive(0,2);
+    </script>
+  
+    <!-- pop up ishletmek uchin gerek -->
+    <script>
+        popup();
+        popup2();
+    </script>
+
+
+    <script src='https://cdn.tiny.cloud/1/hpf9h4802a6gu20q61xonxq5tg2r8ot8qw5bmkjuseuw4s9i/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+    <script src="/scripts/js/component/tinyEdit.js"></script>
+    <script>
+        var text = document.querySelectorAll(".txt");
+        setData(text[0].textContent,text[1].textContent,text[2].textContent);
+    </script>
+
+</body>
+</html>
+
+

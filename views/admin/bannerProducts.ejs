@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+
+        <div class="adminTable">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>Id</td>
+                    <td>Ady</td>
+                    <td>Surady</td>
+                    <td>Delete</td>
+                  </tr>
+                <% if(data.banner_products.length>0){ %> 
+                <% for( let i = 0; i < data.banner_products.length; i++ ) { %>
+                    <tr>  
+                        <td><%= data.banner_products[i].product_id %></td>
+                        <td style="max-width: 400px;"><%=data.banner_products[i].name_tm%></td>
+                        <td><img style="width: 100px" src="http://localhost:5001/<%=data.banner_products[i].image%>" alt="surat yok"></td>
+                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/banners/delete-product/<%=data.banner_products[i].product_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
+                    </tr>
+                    <% }} %>
+                </tbody>
+              </table>
+        </div>
+    </div> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+</body>
+</html>

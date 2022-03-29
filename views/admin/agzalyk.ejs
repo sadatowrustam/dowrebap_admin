@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+<style>
+    </style>
+</head>
+
+<body>
+    <%- include ('./admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <span>
+                    <%= name %> 
+                </span>
+            </div>
+        </div>
+    <form  method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box">
+                        <div class="boxHeader">Türkmençe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Mazmunyň headeri:</label>
+                            <input type="text" name="headerTM" class="header tm" value="<%= data.header.tm[0] %>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <div class="boxHeader">Rusça giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header ru" value="<%= data.header.ru[0] %>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools2"></textarea>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="boxHeader">Iňlisçe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTas">Mazmunyň headeri:</label>
+                            <input type="text" name="headerEN" id="topTas" class="header en" value="<%= data.header.en[0] %>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools3"></textarea>
+                        </div>
+                    </div>
+                    <div class="box"></div>
+                </div>
+                    <div style="display: none;" class="hide"></div>
+                    <div style="display: none;" class="hide2"></div>
+                    <div style="display: none;" class="hide3"></div>
+
+                    <div class="formInputs addHabar">
+                        <div class="box imgBox">
+                            <div class="headerCon">
+                                <div class="suratHeader">
+                                    <label for="">Faýl [PDF] giriziň:</label>
+                                    <label for="sowdaSurat">Faýl goşmak <img src="/pictures/icon/plus.svg" alt=""></label>
+                                    <input type="file" onchange="takeImg(event)" id="sowdaSurat" style="display: none;">
+                                </div>
+                            </div>
+                            <label for="" class="imgsCon">
+                                <!-- js bilen bir tag gelyar surat yok bolondo default surat gelyan -->
+                                <div class="imgCon pdfCon">
+                                    <!-- js bilen doldurylyar surat goyulyar -->
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+            <div class="submitCon">
+                <div class="more" style="display: none;">Ýene maglumat goşmak</div>
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+            <% if (data.files != null) { %>
+                <% for(var i =0 ; i<data.files.length; i++) {%>
+                    <div class="fileTake" style="display: none;"><%= data.files[i].filename %></div>
+                <% } %>
+            <% }else{%>
+                <div class="fileTake" style="display: none;"></div>
+            <% } %>
+
+
+        </div>
+    </form>
+    </div>
+    <div class="txt" style="display: none;"><%= data.body.tm[0] %></div>
+    <div class="txt" style="display: none;"><%= data.body.ru[0] %></div>
+    <div class="txt" style="display: none;"><%= data.body.en[0] %></div>
+
+    <!-- picture show when i choose from file -->
+    <script>
+            var imgCount = 0;
+            var delCount = 0;
+            var pdfs = [];
+            function takeImg(event){
+                if(event.target.files[0] != undefined){
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.innerHTML += `
+                                        <div class="div pdf ${delCount}">
+                                            <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                            <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                            <div class="name"></div>
+                                        </div>`;
+                    
+                    var img = document.querySelectorAll(".imgCon .div .name");
+    
+                    img[imgCount].textContent = event.target.files[0].name;
+                    var obj = {
+                        id:delCount,
+                        event:event.target.files[0]
+                    }
+                    imgCount+=1;
+                    delCount+=1;
+                    pdfs.push(obj);
+                    imgLen();
+                }
+            }
+            var firstLen = true;
+            function firstWork(){
+                var fileTake = document.querySelectorAll(".fileTake");
+                var pic = [];
+                for(var i = 0; i<fileTake.length;i++){
+                    pic.push(fileTake[i].textContent);
+                }
+                
+                
+                if(pic.length == 1 && pic[0] == ''){
+                }else{
+                    var imgCon = document.querySelector(".imgCon");
+                    for(var i = 0; i<pic.length; i++){
+                        imgCon.innerHTML += `
+                                            <div class="div pdf ${delCount}">
+                                                <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                                <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                                <div class="name">${pic[delCount]}</div>
+                                            </div>`;
+                        var obj = {
+                            id:delCount,
+                            event:''
+                        }
+                        delCount+=1;
+                        imgCount+=1;
+                        pdfs.push(obj)
+                    }
+                    if(pic.length !== 0){
+                        imgLen();
+                    }
+                }
+            }
+            firstWork();
+    
+            async function delImg(san){
+                var imgCon = document.querySelectorAll(".imgCon .div");
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].id == san){
+                        if(pdfs[i].event == ''){
+                            const option = {
+                                method: 'delete'
+                            }
+                            var res = await fetch('<%=host%>/menu/deleteFile?index='+i,option);
+                        }
+                        pdfs.splice(i,1);
+                        break;
+                    }
+                }
+                
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].id == san){
+                        pdfs.splice(i,1);
+                    }
+                }
+                
+                for(var i = 0; i<imgCon.length ; i++){
+                    var a = imgCon[i].classList.contains(san);
+                    if(a){
+                        imgCon[i].remove();
+                        break;
+                    }
+                }
+                
+                imgCount-=1;
+                imgLen();
+            }
+    
+            var bool = false;
+            function imgLen(){
+                
+                if(pdfs.length==0){
+                    var imgsCon = document.querySelector(".imgsCon");
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "0";
+                    var old = imgsCon.innerHTML;
+                    imgsCon.innerHTML = `<div class="noneImg">
+                                            <img style="filter: invert(1); opacity:0.7; width:30px" src="/pictures/icon/pdf.svg" alt="">
+                                        </div>`+old;
+                    bool = true;
+                }else if(pdfs.length == 1 && bool){
+                    var imgNone = document.querySelector(".noneImg");
+                    imgNone.remove();
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "200px";
+                    bool = false;
+                }
+            }
+            imgLen();
+    </script>
+
+
+
+
+<!--  load more  ishlemeyar yone-->
+    <!-- <script>
+        var form2 = document.querySelector("form .form2");
+        var form1 = document.querySelector("form .form1");
+
+        var moreBtn = document.querySelector(".more");
+        
+        var tmheader = [];
+        var ruheader = [];
+        var enheader = [];
+        var squllSan = 3;
+        var cssSana = 0;
+        moreBtn.addEventListener("click",function(){
+            var tm = document.querySelectorAll(".tm");
+            var ru = document.querySelectorAll('.ru');
+            var en = document.querySelectorAll('.en');
+            for(var i = 1; i<tm.length; i++){
+                tmheader[i-1] = tm[i].value;
+                ruheader[i-1] = ru[i].value;
+                enheader[i-1] = en[i].value;
+            }
+            form2.innerHTML += form1.innerHTML;
+
+            
+
+            // header valuelaryny goyup beryar;
+            var tm = document.querySelectorAll(".tm");
+            var ru = document.querySelectorAll('.ru');
+            var en = document.querySelectorAll('.en');
+            for(var i = 1; i<tm.length-1; i++){
+                tm[i].value = tmheader[i-1];
+                ru[i].value = ruheader[i-1];
+                en[i].value = enheader[i-1];
+            }
+
+
+            //quill ishletmek uchin
+            var editor1 = document.querySelectorAll('.editorCon');
+            editor1[squllSan].innerHTML = `<div id="editor${squllSan}" class="editorr">
+                                            <p></p>
+                                        </div>`
+            editor1[squllSan+1].innerHTML = `<div id="editor${squllSan+1}" class="editorr">
+                                            <p></p>
+                                        </div>`
+            editor1[squllSan+2].innerHTML = `<div id="editor${squllSan+2}" class='editorr'>
+                                            <p></p>
+                                        </div>`
+
+
+            var edit = document.querySelectorAll(".editorr");
+            for(var i =0; i<cssSana; i++){
+                editor1[3+i].childNodes[0].remove();
+                
+            }
+            cssSana+=3;
+
+            var edit = document.querySelectorAll(".editorr");
+            for(var i = 0; i<edit.length; i++){
+                var editor = new Quill(edit[i], {
+                    modules: { },
+                    theme: 'snow'
+                });
+            }
+            squllSan+=3;
+        })
+    </script> -->
+
+
+<!-- formdan maglumat jemlemek -->
+    <script>
+
+        var submit = document.querySelector("#identifier");
+        var oneTime = true;
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault()
+            // console.log("ishledim")
+            if(oneTime){
+                oneTime = false;
+                var tm = document.querySelectorAll('.tm');
+                var ru = document.querySelectorAll('.ru');
+                var en = document.querySelectorAll('.en');
+
+                var content = tinymce.get("image-tools").getContent();
+                var content2 = tinymce.get("image-tools2").getContent();
+                var content3 = tinymce.get("image-tools3").getContent();
+
+                var inputs = document.querySelectorAll("#identifier input");
+                var data = {
+                    tmheader:[tm[0].value],
+                    ruheader:[ru[0].value],
+                    enheader:[en[0].value],
+                    text:[content],
+                    text2:[content2],
+                    text3:[content3]
+                }
+    
+                
+                // var text = document.querySelectorAll(".ql-editor");
+              
+                
+                // var headFull = true;
+                // var san = 3;
+                // for(var i = 1; i<tm.length; i++){
+                //     if(tm[i].value=='' && ru[i].value == '' &&  en[i].value == ''){
+                //         data.bosh.push(i-1);
+                //     }else{
+                //         data.tmheader.push(tm[i].value);
+                //         data.ruheader.push(ru[i].value);
+                //         data.enheader.push(en[i].value);
+                //         data.text.push(content);
+                //         data.text2.push(content2);
+                //         data.text3.push(content3);
+                //     }
+                //     san+=3;
+                //     if(tm[i].value=='' || ru[i].value == '' ||  en[i].value == ''){
+                //         if(tm[i].value=='' && ru[i].value == '' &&  en[i].value == ''){
+    
+                //         }else{
+                //             headFull = false;
+                //         }
+                //     }
+                // }
+
+                // pdf ucin
+                var pdfAdd = false;
+                //////
+                // pdf uchin gerek
+                var pdfArr = [];
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].event !== ''){
+                        pdfAdd = true;
+                    }
+                    pdfArr.push(pdfs[i].event);
+                }
+                ////////////
+                console.log(data);
+               
+                var res = await dataSend(data,'<%=host%>/menu/editMembership');
+    
+                if(typeof(res.id) == 'number'){
+                    //file add uchin
+                    if(pdfAdd){
+                        var data = await imgSend(pdfArr,'<%=host%>/menu/addFile');
+                        if(data.status == 200){
+                            location.replace('/admin/agzalyk/');
+                        }
+                    }else{
+                        location.replace('/admin/agzalyk/');
+                    }
+                }
+                
+                
+            }
+        })
+        dropActive(2,3);
+    </script>
+
+    <script src='https://cdn.tiny.cloud/1/hpf9h4802a6gu20q61xonxq5tg2r8ot8qw5bmkjuseuw4s9i/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+    <script src="/scripts/js/component/tinyEdit.js"></script>
+    <script>
+        var text = document.querySelectorAll(".txt");
+        setData(text[0].textContent,text[1].textContent,text[2].textContent);
+    </script>
+
+
+    <!-- <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="/scripts/quill-image-resize/image-resize.min.js"></script>
+    <script src="/scripts/quill-image-drop-module/image-drop.min.js"></script>
+  -->
+    <!-- Initialize Quill editor  3sany text area hidden inpuda hem salyar-->
+    <!-- <script>
+      var editor = new Quill('#editor', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor2', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor3', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+
+     
+    </script>  -->
+
+
+    <!-- first -->
+    <!-- <script>
+        function first(){
+            var tmheader = '<%=data.header.tm%>';
+            tmheader = tmheader.split(",");
+            var editor1 = document.querySelectorAll('.editorCon');
+            console.log(tmheader.length,"tmheaderin length");
+            for(var i = 0; i<tmheader.length; i++){
+                
+                editor1[squllSan].innerHTML = `<div id="editor${squllSan}" class="editorr">
+                                                <p></p>
+                                            </div>`
+                editor1[squllSan+1].innerHTML = `<div id="editor${squllSan+1}" class="editorr">
+                                                <p></p>
+                                            </div>`
+                editor1[squllSan+2].innerHTML = `<div id="editor${squllSan+2}" class='editorr'>
+                                                <p></p>
+                                            </div>`
+    
+    
+                var edit = document.querySelectorAll(".editorr");
+                for(var j =0; j<cssSana; j++){
+                    editor1[3+j].childNodes[0].remove();
+                    
+                }
+                cssSana+=3;
+
+    
+                var edit = document.querySelectorAll(".editorr");
+                for(var j = 0; j<edit.length; j++){
+                    var editor = new Quill(edit[j], {
+                        modules: {
+                            imageResize:{},
+                            imageDrop:true,
+                            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+                        },
+                        theme: 'snow'
+                    });
+                }
+                squllSan+=3;
+            }
+
+            var hide = document.querySelector(".hide");
+            var hide2 = document.querySelector(".hide2");
+            var hide3 = document.querySelector(".hide3");
+            var text = document.querySelectorAll(".ql-editor");
+            var hidee = document.querySelectorAll(".hidee");
+            var hidee2 = document.querySelectorAll(".hidee2");
+            var hidee3 = document.querySelectorAll(".hidee3");
+            var bodytm = []
+            var bodyru = []
+            var bodyen = []
+            for(var i =0 ; i<hidee.length; i++){
+                bodytm.push(hidee[i].innerHTML);
+                bodyru.push(hidee2[i].innerHTML);
+                bodyen.push(hidee3[i].innerHTML);
+            }
+            
+            var sana = 3;
+            
+            for(var i = 0; i<bodytm.length; i++){
+                hide.innerHTML = bodytm[i];
+                hide2.innerHTML = bodyru[i];
+                hide3.innerHTML = bodyen[i];
+                text[sana].innerHTML = hide.textContent;
+                text[sana+1].innerHTML = hide2.textContent;
+                text[sana+2].innerHTML = hide3.textContent;
+                sana+=3;
+            }
+        }
+        first();
+
+    </script> -->
+
+</body>
+</html>
+
+

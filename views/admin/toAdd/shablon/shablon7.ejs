@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('../../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form action="/admin/subConstructor2" method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box">
+                        <div class="boxHeader">Türkmençe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Mazmunyň headeri:</label>
+                            <input type="text" name="headerTM" class="header tm" required>
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <div id="editor">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="mazmun">Mazmuny 2:</div>
+                        <div class="editorCon">
+                            <div id="editor2">
+                                <p></p>
+                            </div>
+                        </div>
+                    
+                    </div>
+    
+                    <textarea name="text" style="display: none;" id="hiddenArea" cols="30"  rows="10"></textarea>
+                    <textarea name="text2" id="hiddenArea2" style="display: none;" cols="30"  rows="10"></textarea>
+                    <textarea name="text3" id="hiddenArea3" cols="30" style="display: none;" rows="10"></textarea>
+                    
+                    <div class="box">
+                        <div class="boxHeader">Rusça giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header ru" required>
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <div id="editor3">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="mazmun">Mazmuny 2:</div>
+                        <div class="editorCon">
+                            <div id="editor4">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="boxHeader">Iňlisçe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerEN" id="topTa" class="header en" required>
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <div id="editor5">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="mazmun">Mazmuny 2:</div>
+                        <div class="editorCon">
+                            <div id="editor6">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="box"></div>
+                </div>
+               
+                <div class="formInputs addHabar">
+                    <div class="box imgBox">
+                        <div class="headerCon">
+                            <div class="suratHeader">
+                                <label for="">Faýl [PDF] giriziň:</label>
+                                <label for="sowdaSurat">Faýl goşmak <img src="/pictures/icon/plus.svg" alt=""></label>
+                                <input type="file" onchange="takeImg(event)" id="sowdaSurat" style="display: none;">
+                            </div>
+                        </div>
+                        <label for="" class="imgsCon">
+                            <!-- js bilen bir tag gelyar surat yok bolondo default surat gelyan -->
+                            <div class="imgCon pdfCon">
+                                <!-- js bilen doldurylyar surat goyulyar -->
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+
+            <div class="submitCon">
+                <!-- <div class="more">Ýene maglumat goşmak</div> -->
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+
+
+        </div>
+    </form>
+    </div>
+
+
+        <!-- picture show when i choose from file -->
+        <script>
+            var imgCount = 0;
+            var delCount = 0;
+            var pdfs = [];
+            function takeImg(event){
+                if(event.target.files[0] != undefined){
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.innerHTML += `
+                                        <div class="div pdf ${delCount}">
+                                            <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                            <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                            <div class="name"></div>
+                                        </div>`;
+                    
+                    var img = document.querySelectorAll(".imgCon .div .name");
+    
+                    img[imgCount].textContent = event.target.files[0].name;
+                    var obj = {
+                        id:delCount,
+                        event:event.target.files[0]
+                    }
+                    imgCount+=1;
+                    delCount+=1;
+                    pdfs.push(obj);
+                    imgLen();
+                }
+            }
+    
+            function delImg(san){
+                var imgCon = document.querySelectorAll(".imgCon .div");
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].id == san){
+                        pdfs.splice(i,1);
+                    }
+                }
+    
+                for(var i = 0; i<imgCon.length ; i++){
+                    var a = imgCon[i].classList.contains(san);
+                    if(a){
+                        imgCon[i].remove();
+                        break;
+                    }
+                }
+                
+                imgCount-=1;
+                imgLen();
+            }
+    
+            var bool = false;
+            function imgLen(){
+                if(pdfs.length==0){
+                    var imgsCon = document.querySelector(".imgsCon");
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "0";
+                    var old = imgsCon.innerHTML;
+                    imgsCon.innerHTML = `<div class="noneImg">
+                                            <img style="filter: invert(1); opacity:0.7; width:30px" src="/pictures/icon/pdf.svg" alt="">
+                                        </div>`+old;
+                    bool = true;
+                }else if(pdfs.length == 1 && bool){
+                    var imgNone = document.querySelector(".noneImg");
+                    imgNone.remove();
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "200px";
+                    bool = false;
+                }
+            }
+            imgLen();
+            /////////////////////////////
+        </script>
+        
+       
+     
+        <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+        <script src="/scripts/quill-image-resize/image-resize.min.js"></script>
+        <script src="/scripts/quill-image-drop-module/image-drop.min.js"></script>
+        <!-- Initialize Quill editor  3sany text area hidden inpuda hem salyar-->
+        <script>
+            
+          var editor = new Quill('#editor', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+          var editor = new Quill('#editor2', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+          var editor = new Quill('#editor3', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+          var editor = new Quill('#editor4', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+          var editor = new Quill('#editor5', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+          var editor = new Quill('#editor6', {
+            modules: {
+                imageResize:{},
+                imageDrop:true,
+                toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+            },
+            theme: 'snow'
+          });
+        </script> 
+    
+    
+        <!-- formdan maglumat jemlemek -->
+        <script>
+            var submit = document.querySelector("#identifier");
+    
+            submit.addEventListener("submit",async function(e){
+                e.preventDefault()
+                var inputs = document.querySelectorAll("#identifier input");
+                var data = {
+                    tm:'<%=data.tm%>',
+                    ru:'<%=data.ru%>',
+                    en:'<%=data.en%>',
+                    banner:'<%=data.banner%>',
+                    shablon:'<%=data.shablon%>',
+                    tmheader:[],
+                    ruheader:[],
+                    enheader:[],
+                    text:[],
+                    text2:[],
+                    text3:[],
+                    category:'<%=id%>'
+                }
+                var tm = document.querySelectorAll('.tm');
+                var ru = document.querySelectorAll('.ru');
+                var en = document.querySelectorAll('.en');
+                var text = document.querySelectorAll(".ql-editor");
+    
+                data.tmheader.push(tm[0].value);
+                data.ruheader.push(ru[0].value);
+                data.enheader.push(en[0].value);
+                
+                data.text.push(text[0].innerHTML);
+                data.text.push(text[1].innerHTML);
+                data.text2.push(text[2].innerHTML);
+                data.text2.push(text[3].innerHTML);
+                data.text3.push(text[4].innerHTML);
+                data.text3.push(text[5].innerHTML);
+                
+                 // pdf uchin gerek
+                 var pdfArr = [];
+                for(var i = 0; i<pdfs.length; i++){
+                    pdfArr.push(pdfs[i].event);
+                }
+                ////////////
+                console.log(data);
+                var res = await dataSend(data,'<%=host%>/constructor/subCategory');
+                
+                if(typeof(res.id) == 'number'){
+                    if(pdfArr.length>0){
+                        var data = await imgSend(pdfArr,'<%=host%>/constructor/addFile?id='+res.id);
+                        if(data.status == 200){
+                            location.replace('/admin/subConstructor/<%=id%>');
+                        }
+                    }else{
+                        location.replace('/admin/subConstructor/<%=id%>');
+                    }
+                }
+            })
+        </script>
+    
+</body>
+</html>

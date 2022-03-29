@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('../../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form  method="POST" id="identifier">
+        <div class="adminTable">
+            <div class="formInputs addHabar form1">
+                <div class="box">
+                    <div class="boxHeader">Türkmençe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="">Mazmunyň headeri:</label>
+                        <input type="text" name="headerTM" class="header tm" value="<%= data.header.TM[0] %>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <div id="editor">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="mazmun">Mazmuny 2:</div>
+                    <div class="editorCon">
+                        <div id="editor2">
+                            <p></p>
+                        </div>
+                    </div>
+                
+                </div>
+
+                <textarea name="text" style="display: none;" id="hiddenArea" cols="30"  rows="10"></textarea>
+                <textarea name="text2" id="hiddenArea2" style="display: none;" cols="30"  rows="10"></textarea>
+                <textarea name="text3" id="hiddenArea3" cols="30" style="display: none;" rows="10"></textarea>
+                
+                <div class="box">
+                    <div class="boxHeader">Rusça giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                        <input type="text" name="headerRU" id="topTa" class="header ru" value="<%= data.header.RU[0] %>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <div id="editor3">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="mazmun">Mazmuny 2:</div>
+                    <div class="editorCon">
+                        <div id="editor4">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="boxHeader">Iňlisçe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                        <input type="text" name="headerEN" id="topTa" class="header en" value="<%= data.header.EN[0] %>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <div id="editor5">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="mazmun">Mazmuny 2:</div>
+                    <div class="editorCon">
+                        <div id="editor6">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="box"></div>
+            </div>
+
+
+
+               
+                    <div style="display: none;" class="hide"></div>
+                    <div style="display: none;" class="hide2"></div>
+                    <div style="display: none;" class="hide3"></div>
+
+                    <div class="formInputs addHabar">
+                        <div class="box imgBox">
+                            <div class="headerCon">
+                                <div class="suratHeader">
+                                    <label for="">Faýl [PDF] giriziň:</label>
+                                    <label for="sowdaSurat">Faýl goşmak <img src="/pictures/icon/plus.svg" alt=""></label>
+                                    <input type="file" onchange="takeImg(event)" id="sowdaSurat" style="display: none;">
+                                </div>
+                            </div>
+                            <label for="" class="imgsCon">
+                                <!-- js bilen bir tag gelyar surat yok bolondo default surat gelyan -->
+                                <div class="imgCon pdfCon">
+                                    <!-- js bilen doldurylyar surat goyulyar -->
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                
+
+                    <div class="addHabar bash">
+                        <div class="box">
+                            <div class="boxHeader">Türkmençe</div>
+                            <div class="headerCon">
+                                <label class="mazmuny" for="topTa">Ady:</label>
+                                <input type="text" name="tm" id="topTa" class="header" value="<%= data.name.TM %>">
+                            </div>                
+                        </div>
+                        <div class="box">
+                            <div class="boxHeader">Rusça</div>
+                            <div class="headerCon">
+                                <label class="mazmuny" for="topTa">Ady:</label>
+                                <input type="text" name="ru" id="topTa" class="header" value="<%= data.name.RU %>">
+                            </div>                
+                        </div>
+                        <div class="box">
+                            <div class="boxHeader">Iňlisçe</div>
+                            <div class="headerCon">
+                                <label class="mazmuny" for="topTa">Ady:</label>
+                                <input type="text" name="en" id="topTa" class="header" value="<%= data.name.EN %>">
+                            </div>                
+                        </div>
+                        <div class="box">
+                            <div class="boxHeader">Banner saýla</div>
+                            <div class="headerCon">
+                                <label for="" class="mazmuny">Banner nomeri:</label>
+                                <select class="welayatSelect" style="width: 100%;" name="banner" id="">
+                                    <option value="1">1-nji banner</option>
+                                    <option value="2">2-nji banner</option>
+                                    <option value="3">3-nji banner</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <% if (data.files != null) { %>
+                        <% for(var i =0 ; i<data.files.length; i++) {%>
+                            <div class="fileTake" style="display: none;"><%= data.files[i].filename %></div>
+                        <% } %>
+                    <% }else{%>
+                        <div class="fileTake" style="display: none;"></div>
+                    <% } %>
+
+            <div class="submitCon">
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+
+
+        </div>
+    </form>
+    </div>
+    <% for( let i = 0; i < data.body.TM.length; i++ ) { %>
+        <div style="display: none;" class="tmbody"><%= data.body.TM[i] %> </div>
+        <div style="display: none;" class="rubody"><%= data.body.RU[i] %> </div>
+        <div style="display: none;" class="enbody"><%= data.body.EN[i] %> </div>
+    <% } %>
+    <!-- picture show when i choose from file -->
+    <script>
+            var imgCount = 0;
+            var delCount = 0;
+            var pdfs = [];
+            function takeImg(event){
+                if(event.target.files[0] != undefined){
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.innerHTML += `
+                                        <div class="div pdf ${delCount}">
+                                            <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                            <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                            <div class="name"></div>
+                                        </div>`;
+                    
+                    var img = document.querySelectorAll(".imgCon .div .name");
+    
+                    img[imgCount].textContent = event.target.files[0].name;
+                    var obj = {
+                        id:delCount,
+                        event:event.target.files[0]
+                    }
+                    imgCount+=1;
+                    delCount+=1;
+                    pdfs.push(obj);
+                    imgLen();
+                }
+            }
+            var firstLen = true;
+            function firstWork(){
+                var fileTake = document.querySelectorAll(".fileTake");
+                var pic = [];
+                for(var i = 0; i<fileTake.length;i++){
+                    pic.push(fileTake[i].textContent);
+                }
+                
+                
+                if(pic.length == 1 && pic[0] == ''){
+                }else{
+                    var imgCon = document.querySelector(".imgCon");
+                    for(var i = 0; i<pic.length; i++){
+                        imgCon.innerHTML += `
+                                            <div class="div pdf ${delCount}">
+                                                <img class="img" src="/pictures/icon/pdfRed.png" alt="hjhjhj">
+                                                <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                                <div class="name">${pic[delCount]}</div>
+                                            </div>`;
+                        var obj = {
+                            id:delCount,
+                            event:''
+                        }
+                        delCount+=1;
+                        imgCount+=1;
+                        pdfs.push(obj)
+                    }
+                    if(pic.length !== 0){
+                        imgLen();
+                    }
+                }
+            }
+            firstWork();
+    
+            async function delImg(san){
+                var imgCon = document.querySelectorAll(".imgCon .div");
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].id == san){
+                        if(pdfs[i].event == ''){
+                            const option = {
+                                method: 'delete'
+                            }
+                            var res = await fetch('<%=host%>/constructor/deleteFile?id=<%=data.id%>&index='+i,option);
+                        }
+                        pdfs.splice(i,1);
+                        break;
+                    }
+                }
+                
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].id == san){
+                        pdfs.splice(i,1);
+                    }
+                }
+                
+                for(var i = 0; i<imgCon.length ; i++){
+                    var a = imgCon[i].classList.contains(san);
+                    if(a){
+                        imgCon[i].remove();
+                        break;
+                    }
+                }
+                
+                imgCount-=1;
+                imgLen();
+            }
+    
+            var bool = false;
+            function imgLen(){
+                
+                if(pdfs.length==0){
+                    var imgsCon = document.querySelector(".imgsCon");
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "0";
+                    var old = imgsCon.innerHTML;
+                    imgsCon.innerHTML = `<div class="noneImg">
+                                            <img style="filter: invert(1); opacity:0.7; width:30px" src="/pictures/icon/pdf.svg" alt="">
+                                        </div>`+old;
+                    bool = true;
+                }else if(pdfs.length == 1 && bool){
+                    var imgNone = document.querySelector(".noneImg");
+                    imgNone.remove();
+                    var imgCon = document.querySelector(".imgCon");
+                    imgCon.style.height = "200px";
+                    bool = false;
+                }
+            }
+            imgLen();
+    </script>
+
+
+
+
+    <!-- selecte saylatmak -->
+    <script>
+        var kategori = document.querySelector(".welayatSelect")
+       
+     
+        for(var i = 0; i<kategori.length; i++){
+            var a = kategori[i].getAttribute('value');
+            if(a == '<%=data.bannerId%>'){
+                kategori[i].setAttribute('selected','selected');
+                break
+            }
+        }
+    </script>
+
+
+
+
+<!-- formdan maglumat jemlemek -->
+    <script>
+        var submit = document.querySelector("#identifier");
+        var oneTime = true;
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault()
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier input");
+                var bash = document.querySelectorAll(".bash input");
+                var select = document.querySelector('.welayatSelect');
+                var data = {
+                    tm:bash[0].value,
+                    ru:bash[1].value,
+                    en:bash[2].value,
+                    banner:select.value,
+                    shablon:'<%=data.page%>',
+                    tmheader:[],
+                    ruheader:[],
+                    enheader:[],
+                    text:[],
+                    text2:[],
+                    text3:[],
+                    category:'<%=data.constructorId%>',
+                    bosh:[]
+                }
+    
+                var tm = document.querySelectorAll('.tm');
+                var ru = document.querySelectorAll('.ru');
+                var en = document.querySelectorAll('.en');
+                var text = document.querySelectorAll(".ql-editor");
+                console.log(text);
+    
+    
+                data.tmheader.push(tm[0].value);
+                data.ruheader.push(ru[0].value);
+                data.enheader.push(en[0].value);
+                var headFull = true;
+
+                data.text.push(text[0].innerHTML);
+                data.text.push(text[1].innerHTML);
+                data.text2.push(text[2].innerHTML);
+                data.text2.push(text[3].innerHTML);
+                data.text3.push(text[4].innerHTML);
+                data.text3.push(text[5].innerHTML);
+                
+                // pdf ucin
+                var pdfAdd = false;
+                //////
+                // pdf uchin gerek
+                var pdfArr = [];
+                for(var i = 0; i<pdfs.length; i++){
+                    if(pdfs[i].event !== ''){
+                        pdfAdd = true;
+                    }
+                    pdfArr.push(pdfs[i].event);
+                }
+                console.log(text);
+                console.log(data);
+                ////////////
+               
+                if(headFull){
+                    var res = await dataSend(data,'<%=host%>/constructor/subCategory/edit?id=<%=id%>');
+        
+                    if(typeof(res.id) == 'number'){
+                        //file add uchin
+                        if(pdfAdd){
+                            var data = await imgSend(pdfArr,'<%=host%>/constructor/addFile?id=<%=id%>');
+                            if(data.status == 200){
+                                location.replace('/admin/subConstructor/'+res.id);
+                            }
+                        }else{
+                            location.replace('/admin/subConstructor/'+res.id);
+                        }
+                        ////////
+                    }
+                }else{
+                    alert('headerlerin biri bosh');
+                    oneTime=true
+                }
+                
+            }
+        })
+        linkActive(2);
+    </script>
+ 
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="/scripts/quill-image-resize/image-resize.min.js"></script>
+    <script src="/scripts/quill-image-drop-module/image-drop.min.js"></script>
+ 
+    <!-- Initialize Quill editor  3sany text area hidden inpuda hem salyar-->
+    <script>
+      var editor = new Quill('#editor', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor2', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor3', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor4', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor5', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+      var editor = new Quill('#editor6', {
+        modules: {
+            imageResize:{},
+            imageDrop:true,
+            toolbar: [[{'header':[1,2,3,4,5,6,false]}],['bold','italic','underline'],['link','image'],[{'size':['small',false,'large','huge']}],[{'align':'justify'},{'align':'center'},{'align':'right'}]]
+         },
+        theme: 'snow'
+      });
+    </script> 
+
+
+    <!-- first -->
+    <script>
+        function first(){
+            var hide = document.querySelector(".hide");
+            var hide2 = document.querySelector(".hide2");
+            var hide3 = document.querySelector(".hide3");
+            var text = document.querySelectorAll(".ql-editor");
+
+            var tmbody = document.querySelectorAll(".tmbody");
+            var rubody = document.querySelectorAll(".rubody");
+            var enbody = document.querySelectorAll(".enbody");
+
+            var bodytm = []
+            var bodyru = []
+            var bodyen = []
+            for(var i =0; i<tmbody.length; i++){
+                bodytm.push(tmbody[i].textContent)
+                bodyru.push(rubody[i].textContent)
+                bodyen.push(enbody[i].textContent)
+            }
+
+            text[0].innerHTML = tmbody[0].textContent;
+            text[1].innerHTML = tmbody[1].textContent;
+            text[2].innerHTML = rubody[0].textContent;
+            text[3].innerHTML = rubody[1].textContent;
+            text[4].innerHTML = enbody[0].textContent;
+            text[5].innerHTML = enbody[1].textContent;
+        }
+        first();
+
+    </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form action="/admin/karhanalar" method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box">
+                        <div class="boxHeader">Türkmençe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Kärhana ady:</label>
+                            <input type="text" name="tm" class="header inputss" value="<%=data.name.tm%>">
+                        </div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Mazmunyň headeri:</label>
+                            <input type="text" name="headerTM" class="header inputss" value="<%=data.title.tm%>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools"></textarea>
+                        </div>
+                    
+                    </div>
+                    <div class="box imgBox">
+                        <div class="boxHeader">Suraty giriziň</div>
+                        <div class="mazmun">Suraty giriziň:</div>
+                        <div class="inputs">
+                            <p><input type="file"  accept="image/*" name="image" id="img0" onchange="loadFile(event,0)" class="1" style="display: none;"></p>
+                            <label class="imgLbCon" for="img0"><img id="output" width="100%" src="<%= host %>/industry/<%= data.pic %>"/></label>
+                        </div>
+                    </div>
+                    
+                    <textarea name="text" style="display: none;" id="hiddenArea" cols="30"  rows="10"></textarea>
+                    <textarea name="text2" id="hiddenArea2" style="display: none;" cols="30"  rows="10"></textarea>
+                    <textarea name="text3" id="hiddenArea3" cols="30" style="display: none;" rows="10"></textarea>
+
+                    <div class="box">
+                        <div class="boxHeader">Rusça giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Kärhana ady:</label>
+                            <input type="text" name="ru" class="header inputss" value="<%=data.name.ru%>">
+                        </div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header inputss" value="<%=data.title.ru%>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools2"></textarea>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="boxHeader">Iňlisçe giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="">Kärhana ady:</label>
+                            <input type="text" name="en" class="header inputss" value="<%=data.name.en%>">
+                        </div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                            <input type="text" name="headerEN" id="topTa" class="header inputss" value="<%=data.title.en%>">
+                        </div>
+                        <div class="mazmun">Mazmuny:</div>
+                        <div class="editorCon">
+                            <textarea id="image-tools3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+            <div class="submitCon">
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+        </div>
+    </form>
+    </div>
+
+    <div class="txt" style="display: none;"><%= data.text.tm %></div>
+    <div class="txt" style="display: none;"><%= data.text.ru %></div>
+    <div class="txt" style="display: none;"><%= data.text.en %></div>
+
+
+    <!-- picture show when i choose from file and send to node with fetch-->
+    <script>
+
+        var img;
+        var loadFile = function(event,el) {
+            var image = document.querySelector('#output');
+            
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.width = "100%";
+            image.style.height = "100%";
+            img = event.target.files[0];
+
+        };
+    </script>
+ 
+    
+
+    <script>
+        linkActive(0)
+    </script>
+
+    <!-- formdan maglumat jemlemek -->
+    <script>
+        var oneTime = true;
+        var submit = document.querySelector('#identifier');
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll('#identifier .inputss');
+                var content = tinymce.get("image-tools").getContent();
+                var content2 = tinymce.get("image-tools2").getContent();
+                var content3 = tinymce.get("image-tools3").getContent();
+                var data = {
+                    tm:inputs[0].value,
+                    tmheader:inputs[1].value,
+                    ru:inputs[2].value,
+                    ruheader:inputs[3].value,
+                    en:inputs[4].value,
+                    enheader:inputs[5].value,
+                    text: content,
+                    text2: content2,
+                    text3: content3,
+                }        
+                
+                
+                var arr = [];
+                if(img != undefined){
+                    arr.push(img);
+                }
+
+                var res = await dataSend(data,'<%=host%>/industry/subCategory/edit?id=<%=id%>&index=<%=index%>');
+                
+                if(typeof(res.id) == 'number'){
+                    if(arr.length == 0){
+                        location.replace('/admin/karhanalar/<%=id%>')
+                    }else{
+                        var data = await imgSend(arr,'<%=host%>/industry/addPic?id='+res.id+'&index='+res.index);
+                        if(data.status == 200){
+                            location.replace('/admin/karhanalar/<%=id%>')
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+    <script src='https://cdn.tiny.cloud/1/hpf9h4802a6gu20q61xonxq5tg2r8ot8qw5bmkjuseuw4s9i/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+    <script src="/scripts/js/component/tinyEdit.js"></script>
+    <script>
+        var text = document.querySelectorAll(".txt");
+        setData(text[0].textContent,text[1].textContent,text[2].textContent);
+    </script>
+</body>
+</html>
+
+

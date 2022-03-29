@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  width: 15%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<h2>Login Form</h2>
+
+<form action="/" method="post">
+  <div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+        
+    <button type="submit">Login</button>
+  </div>
+</form>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/scripts/js/component/fileSend.js"></script>
+<script>
+  var link = "<%=host%>"
+  var form = document.querySelector("form");
+  var oneTime = true;
+  form.addEventListener("submit",async function(e){
+      e.preventDefault();
+      if(oneTime){
+          oneTime = false;
+          var inputs = document.querySelectorAll("input");
+          var data = {
+              username:inputs[0].value,
+              password:inputs[1].value,
+          }
+
+              var res = await dataSend(data,`${link}/admin/login`)
+              console.log(res)
+              if(res.token){
+                localStorage.setItem('admin-token',res.token)
+                location.replace("/products/active")                  
+              }else{
+                  alert("Parol ya-da username yalnysh")
+              
+          }
+      }
+  })
+
+</script>
+</body>
+</html>

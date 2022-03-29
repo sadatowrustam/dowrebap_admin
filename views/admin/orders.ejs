@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <style>
+        .welayatSelect{
+            width: 60%;
+            background: #585962;
+            color: inherit;
+            border: none;
+            outline: none;
+            padding: 4px 10px;
+            margin-bottom: 17px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+
+        <div class="adminTable">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>Ulanyjy telefony</td>
+                    <td>Umumy sany</td>
+                    <td>Umumy bahasy</td>
+                    <td>Status</td>
+                    <td>Ginisleyin gormek</td>
+                    <td>Delete</td>
+                  </tr>
+                
+                <% if(data.length>0){ %> 
+                <% for( let i = 0; i < data.length; i++ ) { %>
+                    <tr>  
+                        <td style="max-width: 400px;"><%=data[i].user_phone%></td>
+                        <td><%= data[i].total_quantity%></td> %>
+                        <td><%= data[i].total_price %> </td>
+                        <td><select class="welayatSelect" name="" id="">
+                            <% if (data[i].status==="garashylyar") { %>
+                                <option value="garashylyar" selected>garashylyar</option>
+                            <% } else{%>
+                                <option value="garashylyar">garashylyar</option>
+                            <% } %> 
+                            <% if (data[i].status==="kabul edildi") { %>
+                                <option value="kabul edildi" selected>kabul edildi</option>
+                            <% } else{%>
+                                <option value="kabul edildi">kabul edildi</option>
+                            <% } %>
+                            <% if (data[i].status==="berildi") { %>
+                                <option value="berildi" selected>berildi</option>
+                            <% } else{%>
+                                <option value="berildi">berildi</option>
+                            <% } %><% if (data[i].status==="yatyryldy") { %>
+                                <option value="yatyryldy" selected>yatyryldy</option>
+                            <% } else{%>
+                                <option value="yatyryldy">yatyryldy</option>
+                            <% } %>
+                        </select></td>
+                        <td><a href="/<%= link %>/<%=data[i].order_id%>"><img style="width: 25px" src="/pictures/icon/edit.svg" alt=""></a></td>
+                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/orders/delete/<%=data[i].product_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
+                    </tr>
+                    <% }} %>
+                </tbody>
+              </table>
+        </div>
+    </div> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+    <script>
+        
+        document.querySelector(".headerBtn").style.display="none";
+        document.querySelector(".text").style.display="none";
+    </script>
+</body>
+</html>

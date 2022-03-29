@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/app.css">
+    <link rel="stylesheet" href="/style/src/materialize/splide.min.css">
+    <!-- <script defer src="http://10.192.168.44:3000/socket.io/socket.io.js"></script> -->
+    <!-- <script defer src="https://95.85.118.228:3000/socket.io/socket.io.js"></script> -->
+    <script defer src="https://tstb.gov.tm:2022/socket.io/socket.io.js"></script>
+    <!-- <script defer src="http://10.192.168.51:3000/socket.io/socket.io.js"></script> -->
+    <script defer src="/scripts/js/component/chat.js"></script>
+    <title>TSTB</title>
+    <style>
+      .dropbtn3 {
+        color: #999999;
+        background: none;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .dropdown3 {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content3 {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 100;
+        right: 0;
+      }
+
+      .dropdown-content3 .dil {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        width: auto !important;
+      }
+
+      .dropdown3 .dil:hover {background-color: #ddd;}
+
+      .show {display: block;}
+
+    </style>
+</head>
+<body>
+    <div class="container" style="overflow-x: visible;">
+        <nav>
+            <a href="/">
+              <div class="leftNone">
+                <div class="left">
+                    <div class="logo">
+                        <img src="/pictures/logo/logo.svg" alt="">
+                    </div>
+                    <div class="title" data-content id='title'></div>
+                </div>
+              </div>
+            </a>
+            
+          <div class="right">
+            <label id="searchLabel" class="search">
+              <div class="icon">
+                <img src="/pictures/icon/search.png" alt="">
+              </div>
+              <div class="searchText" data-content id='search'></div>
+              <div class="searchInput" id="searchLabel"><input type="text" data-content id="search" placeholder="Search"></div>
+            </label>
+
+            <div class="dropdown3 language">
+              <button onclick="myFunction()" class="dropbtn3 chosen-lang"></button>
+              <div id="myDropdown3" class="dropdown-content3">
+                <div class="dil lang-link" data-content id="TM">TM</div>
+                <div class="dil lang-link" data-content id="EN">EN</div>
+                <div class="dil lang-link" data-content id="RU">RU</div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    
+      <div class="searchPage">
+        <div class="container">
+          <div class="exit">
+            <div style="cursor: pointer;">
+              <svg width="12" height="12" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.1665 1.66667L6.99983 7.5M6.99983 7.5L12.8332 13.3333M6.99983 7.5L12.8332 1.66667M6.99983 7.5L1.1665 13.3333" stroke="#10181F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span data-content id="exit"></span>
+            </div>
+          </div>
+          <div class="docConCon">
+            <div class="docCon">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menuPage">
+        <div class="container">
+          <div class="exit">
+            <div style="cursor: pointer;">
+              <svg width="12" height="12" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.1665 1.66667L6.99983 7.5M6.99983 7.5L12.8332 13.3333M6.99983 7.5L12.8332 1.66667M6.99983 7.5L1.1665 13.3333" stroke="#10181F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span data-content id="exit"></span>
+            </div>
+          </div>
+          <div class="menular">
+            <div class="menubox">
+              <div class="headbox" data-content id="bashSahypa"></div>
+              <a href="/sppt" class="list" data-content id='sppt'></a>
+              <a href="/agzalar/-1" class="list" data-content id='spptMember'></a>
+              <a href="/membership" class="list" data-content id='membership'></a>
+              <a href="/onlineBussiness/Ashgabat" class="list" data-content id='onlineBusiness'></a>
+              <a href="/businessPlans" class="list" data-content id='businessPlan'></a>
+              <a href="/licenses" class="list" data-content id='licenses'></a>
+              <a href="/consultation" class="list" data-content id='consultation'></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav2">
+        <div class="container">
+          
+            <div class="con">
+              <div class="left">
+                <a href="/sppt">
+                  <div data-content id='sppt'></div>
+                </a>
+                <a href="/agzalar/-1">
+                  <div data-content id='spptMember'></div>
+                </a>
+                <a href="/membership">
+                  <div data-content id='membership'></div>
+                </a>
+                <a href="/onlineBussiness/Ashgabat">
+                  <div data-content id='onlineBusiness'> </div>
+                </a>
+                <a href="/businessPlans">
+                  <div data-content id='businessPlan'> </div>
+                </a>
+                <a href="/licenses">
+                  <div data-content id='licenses'></div>
+                </a>
+                <a href="/consultation">
+                  <div data-content id='consultation'></div>
+                </a>
+              </div>
+                <div class="right menu" style="cursor: pointer;">
+                  <div class="dots"><img src="/pictures/icon/dots.png" alt=""></div>
+                  <div data-content id="menu" style="color:white;"></div>
+                </div>
+            </div>
+            <div class="nagysh"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chatContainer">
+        <div class="textPage" style="display: none;">
+          <div class="textHeader">
+            <div id="chatHeader" data-content></div>
+            <div class="exit" style="cursor: pointer;">
+              <svg width="12" height="12" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.1665 1.66667L6.99983 7.5M6.99983 7.5L12.8332 13.3333M6.99983 7.5L12.8332 1.66667M6.99983 7.5L1.1665 13.3333" fill="white" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="texts">
+            <!-- <div id="bottommm"></div> -->
+          </div>
+          <a href="#bottommm" id="toBot" style="display: none;">ok</a>
+          <div class="writePage">
+            <input id="labelChat" type="text">
+            <label for="labelChat" style="display: none;" id="clickLabel"></label>
+            <img src="/pictures/icon/sendMessage.png" alt=""></div>
+        </div>
+        <div class="chatBtn">
+          <img src="/pictures/icon/chat.png" alt="">
+        </div>
+      </div>
+      
+      <audio id="audio" src="/pictures/icon/message.mp3"></audio>
+      
+
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="/scripts/js/component/fileSend.js"></script>
+
+     
+      
+      <!-- search -->
+      <script>
+        var searchBtn = document.querySelector(".search");
+        var label = document.querySelector(".search label");
+        var search = document.querySelector(".searchInput");
+        var searchText = document.querySelector(".searchText");
+        var searchPage = document.querySelector(".searchPage");
+        var left = document.querySelector(".leftNone");
+        var size = document.defaultView;
+        var exit = document.querySelectorAll(".exit div")[0];
+        var body = document.querySelector("body");
+        searchBtn.addEventListener("click",function(){
+          search.style.width = "335px";
+          searchText.style.display = 'none';
+          searchPage.style.height = 'auto';
+          if(size.innerWidth <640){
+            left.style.display='none'
+          }
+        })
+
+        exit.addEventListener("click",function(){
+          searchText.style.display = 'block';
+          searchPage.style.height = '0'
+          search.style.width = '0';
+          left.style.display = 'block'
+          let searchVal = document.querySelector('input#search');
+          searchVal.value = '';
+          let doc = document.querySelector(".docConCon");
+          doc.innerHTML = `<div class="docCon"></div>`
+        })
+
+        var searching = document.querySelector("input#search");
+        
+        searching.addEventListener("change",async function(){
+          const option = {
+            method:"GET"
+          }
+          
+          var data = await searchData("<%=host%>",this.value)
+          
+          var docCon = document.querySelector(".docConCon");
+          for(var i=0; i<data.length; i++){
+              docCon.innerHTML += `
+                  <div class="docCon">
+                    <a href="/${data[i].category}/${data[i].id}"><div>...${data[i].soz}...</div></a>
+                  </div>
+              ` 
+            }
+          })
+      </script>
+      <!-- menu -->
+      <script>
+        var menu = document.querySelector('.menu');
+        var menular = document.querySelector(".menuPage");
+        var exit = document.querySelectorAll(".exit div")[1];
+        var host = '<%=host%>'
+        var menus = document.querySelector(".menular");
+        var data;
+        var body = document.querySelector("body");
+
+        async function menuTake(){
+          data = await menuData(host);
+          
+          for(var i = 0; i<data.length; i++){
+            
+            menus.innerHTML += `<div class="menubox">
+                <div class="headbox" data-dynamic data-ru="${data[i].name.RU}" data-tm="${data[i].name.TM}" data-en="${data[i].name.EN}">${data[i].name.TM}</div>
+                              </div>`
+            var list = document.querySelectorAll(".menubox");
+            for(var j = 0; j<data[i].constructors.length; j++){
+              list[i+1].innerHTML += `<a class="list" href="/constructor/${data[i].constructors[j].id}" data-dynamic data-ru="${data[i].constructors[j].name.RU}" data-tm="${data[i].constructors[j].name.TM}" data-en="${data[i].constructors[j].name.EN}">${data[i].constructors[j].name.TM}</a>`
+            }
+          }
+          await changeLanguage();
+        }
+        menuTake();
+
+    
+
+        menu.addEventListener("click",async function(){
+          menular.style.height = '100vh';
+          body.style.position = 'fixed';
+          menular.style.overflow = 'auto';
+          body.style.width = "100%";
+          menular.style.paddingBottom = '150px'
+        })
+        exit.addEventListener("click",function(){
+          menular.style.height = '0vh';
+          body.style.position= 'static';
+          menular.style.overflow = 'hidden';
+          menular.style.paddingBottom = '0';
+        })
+      </script>
+      <!-- screen size uytgande dillerin yeri chalshylyar -->
+      <script>
+        var size = document.defaultView;
+        if(size.innerWidth <=1000){
+          changeLangPlace();
+          var a = document.querySelector('.dropdown-content3');
+          var b = document.querySelector(".dropbtn3")
+          a.style.left = '0'
+          b.style.color = 'white'
+        }
+
+        size.addEventListener("resize",function(){
+          if(size.innerWidth <= 1000){
+            changeLangPlace();
+            var a = document.querySelector('.dropdown-content3');
+            var b = document.querySelector(".dropbtn3")
+            a.style.left = '0'
+            b.style.color = 'white'
+          }else{
+            reChangeLangPlace();
+            var a = document.querySelector('.dropdown-content3');
+            var b = document.querySelector(".dropbtn3")
+            a.style.right = '0'
+            a.style.left = 'auto'
+            b.style.color = 'gray'
+          }
+        })
+
+        function changeLangPlace(){
+          const lang = document.querySelector(".language");
+          lang.parentNode.removeChild(lang);
+          const nav2 = document.querySelector(".nav2 .container");
+          const left = document.querySelector(".nav2 .left");
+          left.parentNode.insertBefore(lang,left.nextSibling);
+        }
+        function reChangeLangPlace(){
+          const lang = document.querySelector(".language");
+          lang.parentNode.removeChild(lang);
+          const search = document.querySelector(".search");
+          search.parentNode.insertBefore(lang,search.nextSibling);
+        }
+      </script>
+
+      <!-- language dropdown -->
+      <script>
+        function myFunction() {
+          document.getElementById("myDropdown3").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn3')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content3");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+      </script>
+
+
+  </body>
+</html>

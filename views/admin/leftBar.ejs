@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <script defer src="/scripts/js/component/adminChat.js"></script>
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <title>Admin</title>
+    <style>
+         ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #dde2ff;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        } 
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    </div>
+    
+    <div class="adminContainer">
+        <div class="sidenav">
+            <div style="position: relative;">
+                <div class="adminHeader">TSTB</div>
+
+                <button class="dropdown-btn">
+                    <span>Products</span>  
+                    <div class="close">
+                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#60626E"/>
+                        </svg>
+                    </div>
+                </button>
+                <div class="dropdown-container">
+                  <a href="/products/active">-<span>Active Products</span></a>
+                  <a href="/products/not-active">-<span>Not Active Products</span></a>
+                </div>
+
+ 
+    
+    
+                <a href="/categories" class="yeke">
+                    <span>Kategoriyalar we subkategoriyalar</span>
+                </a>
+                <a href="/banners" class="yeke">
+                    <span>Bannerler</span>
+                </a>
+                <a href="/orders" class="yeke">
+                    <span>Zakazlar</span>
+                </a>
+                <a href="/seller" class="yeke">
+                    <span>Satyjylar</span>
+                </a>
+                <a href="/admin/parol" class="yeke">
+                    <div class="iconCon" style="margin-right: 15px;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 1C3.6916 1 1 3.31809 1 6.16742C1 7.84643 1.92799 9.39582 3.49807 10.3658C3.28023 11.4366 2.79205 12.188 2.7867 12.1961L2.253 13L3.17867 12.8752C3.2853 12.8608 5.76871 12.5147 7.53877 11.3141C8.99236 11.2028 10.3424 10.6421 11.3511 9.72848C12.4144 8.76526 13 7.50062 13 6.16748C13 3.31809 10.3084 1 7 1ZM7.37919 10.454L7.26627 10.4608L7.17237 10.5271C6.14305 11.2542 4.76506 11.6576 3.89819 11.8548C4.08004 11.4274 4.27115 10.8591 4.36654 10.2031L4.41112 9.89641L4.14986 9.75241C2.69512 8.9508 1.82659 7.61071 1.82659 6.16742C1.82659 3.79741 4.14738 1.86917 7 1.86917C9.85262 1.86917 12.1734 3.79735 12.1734 6.16742C12.1734 8.40884 10.0675 10.2917 7.37919 10.454Z" fill="#60626E" />
+                        </svg>
+                    </div>
+                    <span>Açar sözi</span>
+                </a>
+            </div>
+            <div>
+                <a href="/admin/mail" class="yeke">
+                    <div class="iconCon" style="margin-right: 15px;">
+                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 1.5C14 0.675 13.37 0 12.6 0H1.4C0.63 0 0 0.675 0 1.5V10.5C0 11.325 0.63 12 1.4 12H12.6C13.37 12 14 11.325 14 10.5V1.5ZM12.6 1.5L7 5.25L1.4 1.5H12.6ZM12.6 10.5H1.4V3L7 6.75L12.6 3V10.5Z" fill="#60626E"/>
+                        </svg>
+                    </div>
+                    <span>Mail</span>
+                </a>
+                <a href="/admin/messages" onclick="chatPage()" class="yeke">
+                    <div class="iconCon" style="margin-right: 15px;">
+                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 1.5C14 0.675 13.37 0 12.6 0H1.4C0.63 0 0 0.675 0 1.5V10.5C0 11.325 0.63 12 1.4 12H12.6C13.37 12 14 11.325 14 10.5V1.5ZM12.6 1.5L7 5.25L1.4 1.5H12.6ZM12.6 10.5H1.4V3L7 6.75L12.6 3V10.5Z" fill="#60626E"/>
+                        </svg>
+                    </div>
+                    <span>Hatlar</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio">
+        <source src="/pictures/icon/message.mp3">
+    </audio>
+
+
+
+    <!-- login parol yalnysh bolanda -->
+    <!-- drop down function -->
+    <script>
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+    <!-- Pop up functions -->
+    <script>
+            function popup(){
+                var bg = document.querySelector(".bg");
+                var katPop = document.querySelector(".kategoriPopup");
+                var addKat = document.querySelector(".addKategori");
+        
+                addKat.addEventListener("click",function(){
+                    bg.style.display = "block";
+                    katPop.style.display = "block";
+                })
+                bg.addEventListener("click",function(){
+                    bg.style.display = "none";
+                    katPop.style.display = "none";
+                })
+            }
+
+            function popup2(){
+                var bg = document.querySelector(".bg2");
+                var katPop = document.querySelector(".kategoriPopup2");
+                var addKat = document.querySelector(".addKategori2");
+                var element = document.querySelectorAll(".element img");
+        
+                addKat.addEventListener("click",function(){
+                    bg.style.display = "block";
+                    katPop.style.display = "block";
+                })
+                bg.addEventListener("click",function(){
+                    bg.style.display = "none";
+                    katPop.style.display = "none";
+                })
+            }
+
+            async function popupDel(event,id,host){
+                const option = {
+                    method : "DELETE",
+                    headers: {"Accept":"application/json","Content-type":"application/json"},
+                    body:JSON.stringify({teg:id})
+                }
+
+                var tag = await fetch(`${host}/news/tags?id=${id}`,option);
+                if(tag.status == 200){
+                    location.reload();
+                }
+            }
+    </script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+    <script src="/scripts/js/component/giveSpace.js"></script>
+
+    <!-- active -->
+    <script>
+        
+        function dropActive(el,inEl){
+            inEl = inEl*2-1;
+            var a = document.querySelectorAll('.dropdown-btn');
+            var b = document.querySelectorAll(".dropdown-container");
+            // a[el].classList.add("active");
+            a[el].click();
+            b[el].childNodes[inEl].style.color = "white";
+            b[el].childNodes[inEl].style.background = "rgba(159, 162, 180, 0.08)";
+        }
+
+        function linkActive(el){
+            var a = document.querySelectorAll(".yeke")
+            a[el].style.color = "white";
+            a[el].style.background = "rgba(159, 162, 180, 0.08)";
+            a[el].classList.add("active");
+        }
+    </script>
+    </body>
+</html>

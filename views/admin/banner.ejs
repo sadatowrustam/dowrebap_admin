@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+
+        <div class="adminTable">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>T/b</td>
+                    <td>Surat</td>
+                    <td>Uytget</td>
+                    <td>Pozmak</td>
+                  </tr>
+                <% if(data.length>0){ %> 
+                <% for( let i = 0; i < data.length; i++ ) { %>
+                    <tr>  
+                        <td style="max-width: 400px;"><%=i+1%></td>
+                        <td><a href="/<%= link %>/getOne/<%=data[i].banner_id%>"><img style="width: 100px" src="http://localhost:5001/<%=data[i].image%>" alt="surat yok"></a></td>
+                        <td><a href="/<%= link %>/edit/<%=data[i].banner_id%>"><img style="width: 25px" src="/pictures/icon/edit.svg" alt=""></a></td>
+                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/banners/delete/<%=data[i].banner_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
+                    </tr>
+                    <% }} %>
+                </tbody>
+              </table>
+        </div>
+    </div> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+</body>
+</html>

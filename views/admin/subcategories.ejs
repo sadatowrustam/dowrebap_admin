@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <style>
+        div.headerBtn{
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+
+        <div class="adminTable">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>Ady</td>
+                  </tr>
+                  
+                <% for( let i = 0; i < data.length; i++ ) { %>
+                        <tr>
+                            <td style="max-width: 400px;"><%= data[i].name_tm%></td>
+                            <td style="width: 20px;"><a href="/subcategories/edit/<%= data[i].subcategory_id %>"><img style="width: 95%;" src="/pictures/icon/edit.svg" alt=""></a></td>
+                            <td style="width: 40px;" style="cursor:pointer" onclick="del('http://localhost:5001/admin/subcategories/delete/<%=data[i].subcategory_id%>')"><img style="width: 30%;" src="/pictures/icon/delete.svg" alt=""></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+    <script>linkActive(0)</script>
+</body>
+</html>

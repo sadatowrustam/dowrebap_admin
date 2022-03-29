@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <style>
+        .suratHeader{
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %>
+            </div>
+        </div>
+    <form action="/admin/partniyorlar" method="POST" id="identifier">
+        <div class="adminTable">
+                <div class="formInputs addHabar form1">
+                    <div class="box imgBox">
+                        <div class="boxHeader">Adyny giriziň</div>
+                        <div class="headerCon">
+                            <label class="mazmuny" for="topTa">Ady:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header" value="<%=data.name%>">
+                            <label class="mazmuny" for="topTa">Salgylanmasy:</label>
+                            <input type="text" name="headerRU" id="topTa" class="header" value="<%=data.link%>">
+                        </div>
+                        <div style="display: flex;">
+                            <div style="width: 40%; margin-top: 20px;">
+                                <label for="" style="margin-bottom:0;">Logo giriziň:</label>
+                                <label for="logo" class="suratHeader logoPlace">
+                                    <label for="logo" style="cursor: pointer; padding-left:5px"><%= data.pic %> </label>
+                                    <label for="logo"><img src="/pictures/icon/folder.svg" style="width: 15px;" alt=""></label>
+                                    <input type="file" accept="image/*" onchange="takeLogo(event)" id="logo" style="display: none;">
+                                </label>
+                            </div>
+                            <div class="extraInputs">
+                                <div class="ishjen" style="padding-top: 5px; margin-left: 30px;">
+                                    <div class="head" style="margin-bottom: 10px;">Işjeň:</div>
+                                    <% if (data.active == 'true') { %>
+                                        <input type="checkbox" checked name="habarIshjen" id="">
+                                    <% }else{ %>
+                                        <input type="checkbox" name="habarIshjen">
+                                    <% } %> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                       
+                    </div>
+                </div>
+                <div class="formInputs addHabar form2">
+
+                </div>
+
+
+            <div class="submitCon">
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+        </div>
+    </form>
+    </div>
+
+   
+
+    <div class="bg" style="display: none;"></div>
+    <div class="kategoriPopup" style="display: none;">
+        <div class="head">Täze giriziljek katigoriýanyň adyny giriziň </div>
+        <form action="/internetKategori" method="POST" class="kategori">
+            <label for="tm">Turkmen</label>
+            <input autocomplete="off" type="text" name="tm" id="tm">
+            <label for="ru">Rusça</label>
+            <input autocomplete="off" type="text" id="ru" name="ru">
+            <label for="en">Iňlisçe</label>
+            <input autocomplete="off" type="text" id="en" name="en">
+            <input type="submit" value="Ýatda sakla">
+        </form>
+    </div>
+
+
+   
+
+
+ <!-- picture show when i choose from file -->
+ <script>
+    linkActive(1)
+
+    var logo=[]
+    function takeLogo(e){
+        logo.push(e.target.files[0]);
+        var logoLabel = document.querySelector(".logoPlace label");
+        logoLabel.textContent = e.target.files[0].name;
+    }
+
+    var submit = document.querySelector("#identifier");
+    submit.addEventListener("submit",async function(e){
+        e.preventDefault();
+        var inputs = document.querySelectorAll("#identifier input");
+        var data = {
+            name:inputs[0].value,
+            link:inputs[1].value,
+            active:inputs[3].checked
+        }
+        console.log(logo);
+        console.log(data);
+
+        var res = await dataSend(data,'<%=host%>/sponsor/edit?id=<%=data.id%>');
+        if(typeof(res.id) == 'number'){
+            if(logo.length>0){
+                var data = await imgSend(logo,'<%=host%>/sponsor/addPic?id='+res.id);
+                if(data.status == 200){
+                    location.replace('/admin/partniyorlar');
+                }
+            }else{
+                location.replace("/admin/partniyorlar");
+            }
+        }
+    })
+</script>
+</body>
+</html>

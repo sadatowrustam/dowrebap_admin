@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSTB</title>
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <style>
+        .welayat a{
+            text-decoration: none;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <%- include ('../src/header.ejs') %>
+
+    <section class="agzalar business" style="background-color: white;">
+        <div class="container">
+            <div class="agzalarHeader" style="border: none; margin-bottom:0;" data-content id="onlineBusiness">Интернет-торговля</div>
+            <div class="agzalarWelayatlar">
+                <div class="welayat active" id="Ashgabat"><a data-content id="ashgabat" href="/onlineBussiness/Ashgabat">Ashgabat</a></div>
+                <div class="welayat" style="cursor: auto;"  id="Ahal"><a data-content id="ahal" href="/onlineBussiness/Ahal">Ahal</a></div>
+                <div class="welayat" style="cursor: auto;"  id="Balkan"><a data-content id="balkan" href="/onlineBussiness/Balkan">Balkan</a></div>
+                <div class="welayat" style="cursor: auto;"  id="Mary"><a data-content id="mary" href="/onlineBussiness/Mary">Mary</a></div>
+                <div class="welayat" style="cursor: auto;"  id="Dashoguz"><a data-content id="dashoguz" href="/onlineBussiness/Dashoguz">Daşoguz</a></div>
+                <div class="welayat" style="cursor: auto;"  id="Lebap"><a data-content id="lebap" href="/onlineBussiness/Lebap">Lebap</a></div>
+            </div>
+            <div class="selection">
+                <div class="agzaDefinition" data-content id="kategoriDefinition"></div>
+                <select name="" id="kategori">
+                    <option value="" style="display: none;" id="kategoriDefinition" data-content ></option>
+                    <% if (data !=undefined) { %>
+                        <% for( let i = 0; i < data.length; i++ ) { %>
+                            <option value="<%= data[i].name.TM %> " data-dynamic data-tm="<%= data[i].name.TM %>" data-ru="<%= data[i].name.RU %>" data-en="<%= data[i].name.EN %>"><%= data[i].name.TM %> </option>
+                        <% } %>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+    </section>
+    
+    <section class="business">
+        <div class="container">
+            <div class="businessCon">
+                <% var m = 0; %> 
+                <% if (data.length !== 0) { %>
+                    <% for( let i = 0; i < data.length; i++ ) { %>
+                        <div class="kategoriName" id="<%= data[i].name.TM %>" data-dynamic data-tm="<%= data[i].name.TM %>" data-dynamic data-ru="<%= data[i].name.RU %>" data-dynamic data-en="<%= data[i].name.EN %>"><%= data[i].name.TM %></div>
+                        <% for( let j = 0; j < data[i].commerce.length; j++) { %>
+                            <div class="businessOne <%= data[i].commerce[j].welayat %>">
+                                <div class="picture">
+                                    <div class="container">
+                                        <% if (data[i].commerce[j].pic !== null) { %>
+                                            <% for( let k = 0; k < data[i].commerce[j].pic.length; k++ ) { %>
+                                                <div class="mySlides">
+                                                    <img src="<%= host %>/commerce/<%= data[i].commerce[j].id %>/<%= data[i].commerce[j].pic[k] %>" style="width:100%" alt="hello">
+                                                </div>
+                    
+                                            <% } %>
+                                            <% if (data[i].commerce[j].pic.length >1) { %>
+                                                <div class="row">
+                                                    <% for( let k = 0; k < data[i].commerce[j].pic.length; k++ ) { %>
+                                                        <div class="column">
+                                                            <img class="demo cursor" src="<%= host %>/commerce/<%= data[i].commerce[j].id %>/<%= data[i].commerce[j].pic[k] %>" alt="hello" style="width:100%" onclick="currentSlide('<%=k+1%>','<%=m%>')" alt="The Woods">
+                                                        </div>
+                                                    <% } %>
+                                                </div>
+                                            <% } %>
+                                        <% } %>
+                                      </div>
+                                </div>
+                                <div class="infoCon">
+                                    <div class="label" data-content id="name">Имя:</div>
+                                    <div class="infoLabel" data-dynamic data-tm="<%= data[i].commerce[j].name.tm %>" data-en="<%= data[i].commerce[j].name.en %>" data-ru="<%= data[i].commerce[j].name.ru %>"><%= data[i].commerce[j].name.tm %> </div>
+                                    <div class="label"><span data-content id="address">Адрес</span>:</div>
+                                    <div class="infoLabel" data-dynamic data-tm="<%= data[i].commerce[j].address.tm %>" data-en="<%= data[i].commerce[j].address.en %>" data-ru="<%= data[i].commerce[j].address.ru %>"><%= data[i].commerce[j].address.tm %></div>
+                                    <div class="label" data-content id="phone">Телефон:</div>
+                                    <div class="infoLabel"><%= data[i].commerce[j].number %></div> 
+                                    <div class="label"><span data-content id="email"></span>:</div>
+                                    <div class="infoLabel"><%= data[i].commerce[j].email %></div>
+                                    <div class="label"><span data-content id="website"></span></div>
+                                    <div class="web"><a href="//<%= data[i].commerce[j].website %>" target="_blank" style="text-decoration: none; color: #2058D4;"><%= data[i].commerce[j].website %></a></div>
+                                </div>
+                            </div>
+                        <% m+=1} %>
+                    <% } %>
+                <% } %>
+                
+            </div>
+        </div>
+    </section>
+
+    <%- include ('../src/bottom.ejs') %>
+
+    <!-- link -->
+    <script>
+        var kate = document.querySelector("#kategori");
+        kate.addEventListener("change",function(e){
+            var a = document.createElement('a');
+            a.setAttribute("href","#"+kate.value);
+            a.click();
+        })
+    </script>
+
+
+    <!-- Gallery -->
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+        
+
+    // Thumbnail image controls
+        function currentSlide(n,m) {
+            n = Number(n);
+            m = Number(m);
+            showSlides(slideIndex = n,m);
+        }
+
+        function showSlides(n,m) {
+            var i;
+            var business = document.querySelectorAll(".businessOne");
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("demo");
+            if(m == undefined){
+                for(i =0; i<slides.length; i++){
+                    slides[i].style.display = "none";
+                }
+                for(var i =0; i<business.length; i++){
+                    business[i].childNodes[1].childNodes[1].childNodes[1].style.display = "block";  //myslides
+                }
+            }else{
+                var san = (business[m].childNodes[1].childNodes[1].childNodes.length-3)/2
+                for(var i = 0; i < san; i++){
+                    business[m].childNodes[1].childNodes[1].childNodes[i*2+1].style.display = 'none';
+                }
+                business[m].childNodes[1].childNodes[1].childNodes[n*2-1].style.display = "block";
+            }
+        }
+    </script>
+
+    <!-- nav active -->
+    <script>
+        active(3);
+    </script>
+
+
+    <!-- Which welayat active -->
+    <script>
+        const welayat = document.querySelectorAll(".welayat");
+        var wel = '<%=welayat%>'
+        var id  = -1;
+        if(wel == 'Ashgabat'){
+            id = 0;
+        }else if(wel == 'Ahal'){
+            id = 1;
+        }else if(wel == 'Balkan'){
+            id = 2;
+        }else if(wel == 'Mary'){
+            id = 3;
+        }else if(wel == 'Dashoguz'){
+            id = 4;
+        }else if(wel == 'Lebap'){
+            id = 5;
+        }
+        if(id<0){
+            show(welayat[0])
+        }else{
+            show(welayat[id])
+        }
+        
+
+        function show(e){
+            for(var j = 0; j<welayat.length; j++){
+                welayat[j].classList.remove("active");
+            }
+            e.classList.add("active");
+        }
+        
+    </script>
+</body>
+</html>

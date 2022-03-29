@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <style>
+        .boxHeader{
+            margin-bottom: 20px;
+        }
+        .addHabar .box{
+            width: 100% !important;
+        }
+        .headerCon{
+            width: 50% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %> 
+            </div>
+        </div>
+    <form action="/admin/banner3" method="POST" id="identifier">
+        <div class="adminTable addHabar">
+            <div class="box imgBox">
+                <div class="boxHeader">Suraty giriziň</div>
+                <div class="mazmun">Suraty giriziň:</div>
+                <div class="inputs" style="width: 50%;">
+                    <p><input type="file"  accept="image/*" name="image" id="img0" onchange="loadFile(event,0)" class="1" style="display: none;"></p>
+                    <label class="imgLbCon" style="height: 140px;" for="img0"><img id="output" height="40px" src="/pictures/icon/banner.svg" /></label>
+                </div>
+            </div>
+            <div class="box">
+
+            </div>
+            <input class="save" type="submit" value="Ýatda sakla">
+        </div>
+    </form>
+    </div>
+
+
+    <script>
+          var img;
+        var loadFile = function(event,el) {
+            var image = document.querySelector('#output');
+            
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.width = "100%";
+            image.style.height = "100%";
+            img=event.target.files[0];
+        };
+        
+        var oneTime = true;
+        var form = document.querySelector("#identifier");
+        form.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var arr = []
+                arr.push(img)
+                if(arr[0] == undefined){
+                    alert("surat goshmaly");
+                    oneTime = true;
+                }else{
+                    var data = await dataSend({},'<%=host%>/admin/banners/add');
+                    if(data.banner_id){
+                        var data = await imgSend(arr,'<%=host%>/admin/banners/upload-image/'+data.banner_id);
+                        if(data.status == 201){
+                            location.replace("/banners");
+                        }
+                    }
+                }
+            }
+        });
+        
+        linkActive(1)
+    </script>
+</body>
+</html>
+
+

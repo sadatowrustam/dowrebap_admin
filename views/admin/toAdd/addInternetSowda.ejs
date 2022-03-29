@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %>
+            </div>
+            <div style="display: flex;">
+                <div class="addKategori" style="margin-right: 20px;">
+                    Kategoriýa goşmak
+                    <img src="/pictures/icon/plus.svg" alt="plus">
+                </div>
+                <div class="addKategori2 addKategori">
+                    Kategoriýa pozmak
+                    <img src="/pictures/icon/minus.svg" alt="plus">
+                </div>
+            </div>
+        </div>
+    <form action="/admin/internetSowda" method="POST" id="identifier">
+        <div class="adminTable addHabar">
+            <div class="box">
+                <div class="boxHeader">Türkmençe giriziň</div>
+                <div class="headerCon">
+                    <label for="">Ady:</label>
+                    <input type="text" required>
+                    <label for="">Address:</label>
+                    <input type="text" required>
+                </div>
+                <br><br>
+                <div class="boxHeader">Rusça giriziň</div>
+                <div class="headerCon">
+                    <label for="">Ady:</label>
+                    <input type="text" required>
+                    <label for="">Address:</label>
+                    <input type="text" required>
+                </div><br><br>
+                <div class="boxHeader">Iňlisçe giriziň</div>
+                <div class="headerCon">
+                    <label for="">Ady:</label>
+                    <input type="text" required>
+                    <label for="">Address:</label>
+                    <input type="text" required>
+                </div>
+            </div>
+
+            <div class="box imgBox">
+                <div class="headerCon">
+                    <div class="suratHeader">
+                        <label for="">Suraty giriziň:</label>
+                        <label for="sowdaSurat">Surat goşmak <img src="/pictures/icon/plus.svg" alt=""></label>
+                        <input type="file" accept="image/*" onchange="takeImg(event)" id="sowdaSurat" style="display: none;">
+                    </div>
+                </div>
+                <label for="" class="imgsCon">
+                    <!-- js bilen bir tag gelyar surat yok bolondo default surat gelyan -->
+                    <div class="imgCon" >
+                        <!-- js bilen doldurylyar surat goyulyar -->
+                    </div>
+                </label>
+                <div class="headerCon">
+                    <label for="" class="select">
+                        <div>
+                            Welaýat saýlan:
+                        </div>
+                        <select name="" id="" class="welayatSelect" required>
+                            <option value="" style="display: none;">Welaýat saýlaň</option>
+                            <option value="Aşgabat">Aşgabat</option>
+                            <option value="Ahal">Ahal</option>
+                            <option value="Balkan">Balkan</option>
+                            <option value="Lebap">Lebap</option>
+                            <option value="Mary">Mary</option>
+                            <option value="Daşoguz">Daşoguz</option>
+                        </select>
+                    </label>
+                    <label style="margin-top: 4px;" for="" class="select">
+                        <div>
+                            Kategoriýa saýlaň:
+                        </div>
+                        <select  name="" id="" class="welayatSelect" required>
+                            <option value="" style="display: none;">Kategoriýa saýlaň</option>
+                            <% for( let i = 0; i < tag.length; i++ ) { %>
+                                <option value="<%= tag[i].id %>"><%= tag[i].name.TM %> </option>
+                            <% } %>
+                        </select>
+                    </label>
+                    <label style="margin-top:0;" for="">Telefon:</label>
+                    <input type="text" required>
+                    <label for="">Email:</label>
+                    <input type="text" required>
+                    <label for="">Web-saýt:</label>
+                    <input type="text" required>
+                </div>
+            </div>
+            <input class="save" type="submit" value="Ýatda sakla">
+    </form>
+    </div>
+
+    <div class="bg" style="display: none;"></div>
+    <div class="kategoriPopup" style="display: none;">
+        <div class="head">Täze giriziljek katigoriýanyň adyny giriziň </div>
+        <form action="/internetKategori" method="POST" class="kategori">
+            <label for="tm">Turkmen</label>
+            <input autocomplete="off" type="text" name="tm" id="tm">
+            <label for="ru">Rusça</label>
+            <input autocomplete="off" type="text" id="ru" name="ru">
+            <label for="en">Iňlisçe</label>
+            <input autocomplete="off" type="text" id="en" name="en">
+            <input type="submit" value="Ýatda sakla">
+        </form>
+    </div>
+
+    <div class="bg2 bg" style="display: none;"></div>
+    <div class="kategoriPopup2 kategoriPopup" style="display: none;">
+        <div class="head">Teg pozmak</div>
+        <% for( let i = 0; i < tag.length; i++ ) { %>
+            <div class="element"><%= tag[i].name.TM %> <img onclick="popupDelkat(this,'<%=tag[i].id%>')" src="/pictures/icon/minus.svg" alt=""></div>
+        <% } %>
+    </div>
+   
+
+    <!-- picture show when i choose from file -->
+    <script>
+        var imgCount = 0;
+        var delCount = 0;
+        var imgs = [];
+        function takeImg(event){
+            if(event.target.files[0] != undefined){
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.innerHTML += `<div class="div ${delCount}">
+                                        <img class="img" src="" alt="">
+                                        <div class="imgDelete" onclick="delImg(${delCount})"><img src="/pictures/icon/delete.svg"  alt=""></div>
+                                    </div>`;
+                
+                var img = document.querySelectorAll(".imgCon .div .img");
+                img[imgCount].src = URL.createObjectURL(event.target.files[0]);
+                var obj = {
+                    id:delCount,
+                    event:event.target.files[0]
+                }
+                imgCount+=1;
+                delCount+=1;
+                imgs.push(obj);
+                imgLen();
+            }
+        }
+
+        
+
+        function delImg(san){
+            var imgCon = document.querySelectorAll(".imgCon .div");
+            for(var i = 0; i<imgs.length; i++){
+                if(imgs[i].id == san){
+                    imgs.splice(i,1);
+                }
+            }
+
+            for(var i = 0; i<imgCon.length ; i++){
+                var a = imgCon[i].classList.contains(san);
+                if(a){
+                    imgCon[i].remove();
+                    break;
+                }
+            }
+            
+            imgCount-=1;
+            imgLen();
+        }
+
+        var bool = false;
+        function imgLen(){
+            if(imgs.length==0){
+                var imgsCon = document.querySelector(".imgsCon");
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.style.height = "0";
+                var old = imgsCon.innerHTML;
+                imgsCon.innerHTML = `<div class="noneImg">
+                                        <img src="/pictures/icon/addPicture.svg" alt="">
+                                    </div>`+old;
+                bool = true;
+            }else if(imgs.length == 1 && bool){
+                var imgNone = document.querySelector(".noneImg");
+                imgNone.remove();
+                var imgCon = document.querySelector(".imgCon");
+                imgCon.style.height = "200px";
+                bool = false;
+            }
+        }
+        imgLen();
+
+        var submit = document.querySelector("#identifier");
+        var oneTime = true;
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll('form#identifier input')
+                var select = document.querySelectorAll(".welayatSelect");
+    
+                var data={
+                    tm:inputs[0].value,
+                    ru:inputs[2].value,
+                    en:inputs[4].value,
+                    tmaddress:inputs[1].value,
+                    ruaddress:inputs[3].value,
+                    enaddress:inputs[5].value,
+                    welayat:select[0].value,
+                    category:select[1].value,
+                    email:inputs[8].value,
+                    telefon:inputs[7].value,
+                    web:inputs[9].value
+                }
+                
+                var arr = [];
+                for(var i = 0; i<imgs.length; i++){
+                    arr.push(imgs[i].event);
+                }
+                console.log(data);
+                console.log(arr);
+
+                var id = await dataSend(data,'<%=host%>/commerce/');
+                if(typeof(id.id) == 'number'){
+                    if(arr.length == 0){
+                        location.replace("/admin/internetSowda");
+                    }else{
+                        var data = await imgSend(arr,'<%=host%>/commerce/addPic?id='+id.id);
+                        if(data.status == 200){
+                            location.replace("/admin/internetSowda");
+                        }
+                    }
+                }else{
+                    console.log(id);
+                }
+            }
+        })
+    </script>
+
+    <!-- popup ishletmek -->
+    <script>
+        dropActive(2,4);
+        popup();
+        popup2();
+    </script>
+        <!-- Teg goshmak -->
+        <script>
+            var link = "<%=host%>"
+            var tegSubmit = document.querySelector(".kategori");
+            var oneTime = true;
+            tegSubmit.addEventListener("submit",async function(e){
+                e.preventDefault();
+                if(oneTime){
+                    oneTime = false;
+                    var tm = document.querySelector("form.kategori #tm").value;
+                    var ru = document.querySelector("form.kategori #ru").value;
+                    var en = document.querySelector("form.kategori #en").value;
+                    
+                    var data = {
+                        tm,
+                        ru,
+                        en
+                    }
+                    var status =await dataSend(data,`${link}/commerce/addCategory`);
+                    console.log(status);
+                    if(status.status == 200){
+                        location.reload();
+                    }
+                }
+            })
+
+            async function popupDelkat(event,id){
+                const option = {
+                    method : "DELETE",
+                    headers: {"Accept":"application/json","Content-type":"application/json"}
+                }
+
+                var tag = await fetch(`${link}/commerce/deleteCategory?id=${id}`,option);
+                if(tag.status == 200){
+                    location.reload();
+                }
+            }
+        </script>
+
+
+
+</body>
+</html>
+
+

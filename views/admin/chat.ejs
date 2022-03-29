@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <style>
+        .right{
+            display: none !important;
+        }
+        .unread{
+            background: #717171 !important;
+        }
+    </style>
+</head>
+<body>
+    <%- include ('admin.ejs') %>
+    <%- include ('header.ejs') %>
+
+    <div class="adminContainer">
+        <div class="adminTable chatCon">
+            <% for( let i = 0; i < data.length; i++ ) { %>
+                <% if (data[i].chat !== null) { %>
+                    <% if (data[i].isRead == 'true') { %>
+                        <a href="/admin/messages/<%= data[i].id %>"><div class="oneHat"><%= data[i].chat[data[i].chat.length-1].message %></div></a>
+                    <% }else{ %>
+                        <a href="/admin/messages/<%= data[i].id %>"><div class="oneHat unread"><%= data[i].chat[data[i].chat.length-1].message %></div></a>
+                    <% } %>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+
+
+    <script>
+        linkActive(5)
+    </script>
+</body>
+</html>

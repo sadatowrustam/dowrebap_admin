@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <style>
+        .choosenTeg{
+            margin-top: 20px;
+            width: 50%;
+        }
+        .choosenTeg div{
+            margin-top: 10px;
+            background: #585962;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .choosenTeg div img{
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        ::placeholder{
+            color:#fff;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('../admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <%= name %>
+            </div>
+        </div>
+    <form action="" method="POST" id="identifier">
+        <div class="adminTable addHabar">
+                <div class="box">
+                    <div class="boxHeader">Türkmençe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="a">Turkmençe ady:</label></label>
+                        <input type="text" name="headerTM" id="a" required class="header inputs" value="<%=data.name_tm%>">
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                        <textarea rows="23"  id="body-tm" style="background: #585962;color: #fff;width:100%"><%=data.body_tm%></textarea>
+                </div>
+                <div class="box imgBox">
+                    <div class="boxHeader">Suraty giriziň</div>
+                    <div class="mazmun">Suraty giriziň:</div>
+                    <div class="inputs">
+                        <p><input type="file" accept="image/*" name="image" id="img" onchange="loadFile(event)" style="display: none;"></p>
+                        <label class="imgLbCon" for="img"><img style="height:100%"id="output"  src="<%=host%>/<%=data.product_id%>.webp"/></label>
+                    </div>
+                    <div class="extraInputs" style="justify-content: space-between;">
+                            <div for="" class="select" style="width: auto; margin-right: 20px;">
+                                <div style="float: none; min-width: 100%;">
+                                    Kategorya saylan:
+                                </div>
+                                <select name="" id="category" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
+                                    <option style="display:none">Kategorya saylan</option>
+                                    <% for( let i = 0; i < categories.length; i++ ) { %>
+                                        <% if (data.categoryId==categories[i].id) { %>
+                                        <option value="<%= categories[i].category_id %>" selected><%= categories[i].name_tm %></option>
+                                        <% } else {%>
+                                        <option value="<%= categories[i].category_id %>"><%= categories[i].name_tm %></option>
+                                        <%}%>
+                                    <% } %>
+                                </select>
+
+                                <div style="float: none; min-width: 100%;">
+                                    Subkategorya saylan:
+                                </div>
+                                <select name="" id="subcategory" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
+                                    <option value="" style="display: none;" id="defaultSub">Subkategorya saylan</option>
+                                    <% for( let i = 0; i < categories.length; i++ ) { %>
+                                        <% if (data.categoryId==categories[i].id) { %>
+                                         <% for( let j = 0; j < categories[i].category_subcategories.length; j++ ) { %>
+                                            <% if (data.subcategoryId==categories[i].category_subcategories[j].id) { %>
+                                                <option selected value="<%= categories[i].category_subcategories[j].subcategory_id %>"><%= categories[i].category_subcategories[j].name_tm%></option>
+                                            <% }else{ %>
+                                                <option  value="<%= categories[i].category_subcategories[j].subcategory_id %>"><%= categories[i].category_subcategories[j].name_tm %></option>
+                                            <% } %>
+                                        <% } %>
+                                    <% } %>
+                                    <% } %> 
+                                </select>
+                            </div>
+                                <input class="inputs" placeholder="Haryt sany" type="number" min="0" value="<%= data.product_stock.stock_quantity %>" style="background: #585962;color: #fff; height: 22px;outline: none;">
+                                <% if (data.price_old!=null) { %>
+                                <input class="inputs" type="text" placeholder="if Bahasy"  value="<%= data.price_old%>" style="background: #585962;color: #fff; height: 22px;outline: none;">
+                                <% }else{ %>
+                                <input class="inputs" type="text" placeholder="else Bahasy"  value="<%= data.price%>" style="background: #585962;color: #fff; height: 22px;outline: none;">
+                                <% }  %> 
+                                <input  class="inputs" type="number" min="0" value="<%= data.discount %>" placeholder="Skidka giriz" style="background: #585962;color: #fff; height: 22px;outline: none;">
+                            
+                        <div class="ishjen">
+                            <div class="head">Işjeň:</div>
+                            <% if (data.isActive) { %>
+                                <input type="checkbox" class="inputs" checked name="habarIshjen" id="">
+                            <% }else{ %>
+                                <input type="checkbox" class="inputs" name="habarIshjen" id="">
+                            <% } %> 
+                        </div>
+                    </div>
+            </div>
+            <div class="box">
+                <div class="boxHeader">Rusça giriziň</div>
+                <div class="headerCon">
+                    <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                    <input type="text" name="headerRU" id="topTa" class="header inputs" required value="<%=data.name_ru%>">
+                </div>
+                <div class="mazmun">Mazmuny:</div>
+                <textarea rows="23"  id="body-ru" style="background: #585962;color: #fff; width:100%"><%=data.body_ru%></textarea>
+            </div>
+            <div class="box">
+                <div class="boxHeader">Iňlisçe giriziň</div>
+                <div class="headerCon">
+                    <label class="mazmuny" for="topTa">Mazmunyň headeri:</label>
+                    <input type="text" name="headerEN" id="topTa" class="header inputs" required value="<%=data.name_en%>">
+                </div>
+                <div class="mazmun">Mazmuny:</div>
+                <textarea rows="23" cols="88" id="body-en" style="background: #585962;color: #fff; width: 100%;"><%=data.body_en%></textarea>
+            </div>
+            <input class="save" type="submit" value="Ýatda sakla">
+    </form>
+    </div>
+    <% for( let i = 0; i < categories.length; i++ ) { %>
+        <div style="display: none;" class="categories"><%=categories[i].category_id%>
+            <% for( let j = 0; j < categories[i].category_subcategories.length; j++ ) { %>
+                <div class="subcategory_name"><%= categories[i].category_subcategories[j].name_tm%></div>
+                <div class="subcategory_id"><%= categories[i].category_subcategories[j].subcategory_id%></div>
+            <% } %>
+        </div>
+        </div>
+    <% } %>
+    
+    <div class="bg" style="display: none;"></div>
+    <div class="bg2 bg" style="display: none;"></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/js/component/fileSend.js"></script>
+    
+    
+    <!-- categoryanyn subcategorysyny cykarmak -->
+    <script>
+        let categories=document.querySelectorAll(".categories")
+        let subcategory=document.querySelector("#subcategory")
+        var teg = document.querySelector("#category");
+        teg.addEventListener("change",function(){
+            subcategory.innerHTML=""
+            let optionElement=document.createElement("option")
+            optionElement.text="Subkategorya sayla"
+            optionElement.selected = true
+            optionElement.style="display: none;"
+            subcategory.appendChild(optionElement);
+            categories.forEach(e=>{
+                let category_id=e.textContent.split(" ")[0]
+                category_id = category_id.substring(0, category_id.length - 1)
+                if(category_id==teg.value){
+                    for (let nameIndex=1;nameIndex<e.childNodes.length;nameIndex=nameIndex+4){
+                        optionElement=document.createElement("option")
+                        optionElement.text=e.childNodes[nameIndex].innerText;
+                        optionElement.value=e.childNodes[nameIndex+2].innerText;
+                        subcategory.appendChild(optionElement);
+                    }
+                }
+            })
+        })
+        </script>
+    <script>
+        var link = "<%=host%>"
+        let id="<%=data.product_id%>"
+        var form = document.querySelector("#identifier");
+        var img;
+        var loadFile = function(event,el) {
+            var image = document.querySelector('#output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.width = "100%";
+            image.style.height = "100%";
+            img = document.querySelector(".inputs p input");
+            img = img.files[0];
+        }; 
+
+        var oneTime = true;
+        form.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier .inputs");
+                console.log(inputs)
+                var content = document.querySelector("#body-tm").value
+                var content2 = document.querySelector("#body-ru").value;
+                var content3 =document.querySelector("#body-en").value ;
+                let category_id=document.querySelector("#category").value
+                let subcategory_id=document.querySelector("#subcategory").value
+                var data = {
+                    body_tm:content,
+                    body_ru: content2,
+                    body_en:content3,
+                    name_tm:inputs[0].value,
+                    name_ru:inputs[6].value,
+                    name_en:inputs[7].value,
+                    isActive:inputs[5].checked,
+                    stock:inputs[2].value,
+                    discount:inputs[4].value,
+                    price:inputs[3].value,
+                    category_id,
+                    subcategory_id
+                }
+                var arr = [];
+                arr.push(img);
+                var res = await dataSend(data,`${link}/admin/products/edit/${id}`)
+                if(res.product_id && arr[0]){
+                    var res2 = await imgSend(arr,`${link}/admin/products/upload-image/${res.product_id}`);
+                    if(res2.status !=201){alert("Surat goshun"),oneTime=true}
+                    else{location.replace("/products/active")}
+                
+                }else if(res.product_id){
+                    location.replace("/products/active")
+                }
+                else{
+                    alert(res.message)
+                } 
+            }
+        })
+
+    </script>
+
+    <!-- Teg goshmak -->
+
+    <!-- drop active etmek ucin -->
+    <script>
+        dropActive(0,2);
+    </script>
+
+    <!-- pop up ishletmek uchin gerek -->
+    <script>
+        popup();
+        popup2();
+    </script>
+
+</body>
+</html>
+
+

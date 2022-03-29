@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSTB</title>
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+</head>
+<body>
+    <%- include ('../src/header.ejs') %>
+
+
+    <section class="agzalar" style="background-color: white;">
+        <div class="container">
+            <div style="margin-top: 50px;" class="mazmunHeader" data-dynamic data-tm="<%=data.header.TM%>" data-ru="<%=data.header.RU%>" data-en="<%=data.header.EN%>"><%= data.header.TM %> </div>
+            <div class="oneImgCon" style="width: 80%; margin: 0 auto;"><img src="<%= host %>/<%=file%>/<%=data.pic%>" alt=""></div>
+            <div class="mazmun" data-dynamic data-tm="<%=data.body.TM%>" data-ru="<%=data.body.RU%>" data-en="<%=data.body.EN%>"><%= data.body.TM %></div>
+        </div>
+    </section>
+
+
+    <%- include ('../src/bottom.ejs') %>
+
+</body>
+</html>

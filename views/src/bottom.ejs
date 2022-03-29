@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+
+
+<div class="bottomContainer">   
+    <div class="bottomSection">
+        <div class="container">
+            <div class="bottomGrid">
+                <div class="phones">
+                    <div class="title" data-content id="goniTelefon">Telefonlar</div>
+                    <div class="phoneCon">
+                        <div class="phone">+99312-21-23-44</div>
+                        <div class="phone">+99312-21-23-45</div>
+                    </div>
+                </div>
+                <div class="adress">
+                    <div class="title" data-content id="address">Adress</div>
+                    <div class="adressCon" data-content id="bottomAddress">Aşgabat şäheriniň A.Nyýazow köçesi 174-nji jaýy 744013</div>
+                </div>
+                <div class="email">
+                    <div class="title" data-content id="email">Email</div>
+                    <div class="emailCon"> info@tstb.gov.tm</div>
+                </div>
+                <div class="about">
+                    <div class="title"><a href="/sppt" data-content id="spptBarada" style="text-decoration: none; color: gray;">O CPPT</a></div>
+                    <div class="title" style="margin-bottom: 0; font-size:16px" ><a id="jogap" data-content href="/#bolumler" style="color:gray;text-decoration: none; cursor: pointer;">Obratnaya swyaz</a></div>
+                </div>
+            </div>
+            <div class="lastThreeLine">
+                <div><a href="/sppt" data-content id="spptBarada" style="text-decoration: none;color:gray">O CPPT</a></div>
+                <div ><a id="jogap" data-content href="/#bolumler" style="text-decoration: none;color:gray">Obratnaya swyaz</a></div>
+            </div>
+            <div class="followers">
+                <div class="title" id="watched" data-content>Followers</div>
+                <div class="followCounts">
+                    <div class="day">  <span data-content id="gunlik">a day</span><span></span></div>
+                    <div>|</div>
+                    <div class="month"> <span data-content id="aylyk">a month</span><span></span></div>
+                    <div>|</div>
+                    <div class="year"> <span id="yyllyk" data-content>a year</span><span></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottomInformation" >
+        <div class="container bottomCon">
+            <div class="titleCon">
+                <div class="big" id="follow" data-content>Yazylyshyk</div>
+                <div class="title" id="followDefinition" data-content>Oz email inizi girizin tazelikler ucin</div>
+            </div>
+            
+            <form class="inputCon">
+                <input type="email" required id="pocta" data-content  placeholder="Email Address">
+                <input class="submit" type="submit" id="toFollow" data-content value="Goshulmak">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <script src="/scripts/js/component/fileSend.js"></script>
+    <script>
+        var submit = document.querySelector('.inputCon');
+        submit.addEventListener("submit",async function(e){
+            e.preventDefault()
+            var val = document.querySelector('.inputCon input[type=email]');
+            var status = await mail(`<%=host%>/mail`,data);
+            if(status.status == 200){
+                alert("Siz goşuldyňyz");
+            }
+        })
+    </script>
+
+    <script src="/scripts/main.js"></script>
+    <script>
+        user('<%=host%>');
+        async function statistika(){
+          var data2;
+          data2 = await statistikaTake(host);
+          var day = document.querySelectorAll(".day span")[1];
+          var month = document.querySelectorAll(".month span")[1];
+          var year = document.querySelectorAll(".year span")[1];
+          day.textContent = data2.today;
+          month.textContent = data2.week;
+          year.textContent = data2.month;
+
+        }
+        statistika();
+        
+    </script>
+    <script src="/scripts/src/materialize/splide.js"></script>
+    <script src="/scripts/src/jquery/jquery.min.js"></script>
+  </body>
+</html>

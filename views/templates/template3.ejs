@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSTB</title>
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+</head>
+<body>
+    <%- include ('../src/header.ejs') %>
+
+    <section class="agzalar" style="background-color: white;">
+        <div class="container">
+            <div class="agzalarHeader" data-dynamic data-tm="<%= data.name.TM %>" data-ru="<%= data.name.RU %>" data-en="<%= data.name.EN %>"><%= data.name.TM %> </div>
+            <!-- <div class="subName">Строительная промышленность</div> -->
+            <% for( let i = 0; i < data.header.TM.length; i++ ) { %>
+                <div class="mazmunHeader" data-dynamic data-tm="<%= data.header.TM[i] %>" data-ru="<%= data.header.RU[i] %>" data-en="<%= data.header.EN[i] %>"><%= data.header.TM[i] %></div>
+                <div class="oneImgCon" style="width: 80%; margin: 0 auto;"><img src="<%= host %>/constructor/<%= data.id %>/<%= data.pic[i] %> " alt=""></div>
+                <div class="mazmun" data-dynamic data-tm="<%= data.body.TM[i] %>" data-ru="<%= data.body.RU[i] %>" data-en="<%= data.body.EN[i] %>"><%= data.body.TM[i] %></div>
+            <% } %>
+
+            <% if (data.files !== null) { %>
+                <div  class="adress" id="fileDownloadUcin" data-content>Flayllar download etmek uchin</div>
+                <div style="margin-bottom:50px;" class="filesCon">
+                    <% for( let i = 0; i < data.files.length; i++ ) { %>
+                        <div class="file">
+                            <div class="icon"><img src="/pictures/icon/file.svg" alt=""></div>
+                            <div class="fileRight">
+                                <div class="name"><a href="<%= host %>/constructor/download?file=<%= data.files[i].filename %>&id=<%= data.id %>" download><%=data.files[i].filename%></a></div>
+                                <div class="kb"><%= data.files[i].size %> </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+
+
+            <div class="splide">
+                <div class="splide__track">
+                  <ul class="splide__list">
+                      <% for( let i = 0; i < data.banner.banner.length; i++ ) { %>
+                        <li class="splide__slide"><a target="_blank" href="//<%= data.banner.banner[i].link %>"><div><img src="<%= host %>/banners/<%= data.banner.banner[i].pic %>" alt=""></div></a></li>
+                      <% } %>
+                  </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include ('../src/bottom.ejs') %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+              new Splide('.splide',{
+                  type:"loop",
+                  perPage:1,
+                  autoplay:true,
+                  cover:true
+                }).mount();
+            });
+     </script>
+</body>
+</html>

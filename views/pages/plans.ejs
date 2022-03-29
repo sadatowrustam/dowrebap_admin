@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSTB</title>
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+</head>
+<body>
+    <%- include ('../src/header.ejs') %>
+
+
+
+<section class="agzalar">
+    <div class="container">
+        <div class="agzalarHeader" data-content id="businessPlan">Бизнес-планы</div>
+        <div class="listContainer" style="display: block;">
+            <% for( let i = 0; i < data.length; i++ ) { %>
+                <div class="agzalarList">
+                    <div class="main">
+                        <div class="text">
+                            <div class="listHead" data-dynamic data-tm="<%= data[i].header.tm %>" data-ru="<%= data[i].header.ru %>" data-en="<%= data[i].header.en %>"><%= data[i].header.tm %> </div>
+                            <div class="listText textDots" data-dynamic data-tm="<%= data[i].body.tm %>" data-ru="<%= data[i].body.ru %>" data-en="<%= data[i].body.en %> "><%= data[i].body.tm %> </div>
+                        </div>
+                        <div class="icon"><img src="/pictures/icon/grayRightArrow.svg" alt=""></div>
+                    </div>
+                    <div class="full">
+                        <div class="adress" data-content id="fileDownloadUcin">Fayllar download etmek uchin</div>
+                        <div class="filesCon">
+                            <% if (data[i].files !== null) { %>
+                            <% for( let j = 0; j < data[i].files.length; j++ ) { %>
+                                    <div class="file">
+                                        <div class="icon"><img src="/pictures/icon/file.svg" alt=""></div>
+                                        <div class="fileRight">
+                                            <div class="name"><a href="<%= host %>/menu/bussiness/download?file=<%= data[i].files[j].filename %>&id=<%= data[i].id %>" target="_blank" download> <%= data[i].files[j].filename %></a></div>
+                                            <div class="kb"><%= data[i].files[j].size %> </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div> 
+    </div>
+</section>
+
+
+    <%- include ('../src/bottom.ejs') %>
+
+    <!-- 7 sany page navbardaky sholara active beryar -->
+    <script>active(4)</script>
+
+    <script>
+        const list = document.querySelectorAll(".agzalarList .main");
+        
+        var bul = true;
+        // if(id>=0){
+
+        // }else{
+
+        // }
+
+
+        for(var i = 0; i<list.length; i++){
+            list[i].addEventListener("click",function(){
+                if(this.style.backgroundColor == "white" || bul){
+                    for(var j = 0; j<list.length; j++){
+                        clothes(list[j])
+                    }
+                    open(this);
+                }else{
+                    clothes(this);
+                    bul = true;
+                }
+            })
+        }
+
+
+        function clothes(e){
+            e.childNodes[1].childNodes[3].classList.add("textDots")
+            e.nextSibling.nextSibling.style.display = "none";
+            e.parentNode.style.border = "none";
+            e.style.backgroundColor = "white";
+            var child = e.childNodes[3].childNodes[0];
+            child.setAttribute("src","/pictures/icon/grayRightArrow.svg");
+            e.childNodes[3].style.minWidth = "12px";
+            e.childNodes[3].style.margin = "auto 0";
+        }
+        function open(e){
+            e.childNodes[1].childNodes[3].classList.remove("textDots")
+            e.nextSibling.nextSibling.style.display = "block"
+            e.style.backgroundColor = "#F3F3F2";
+            e.parentNode.style.border = "1px solid #2058D4"
+            var child = e.childNodes[3].childNodes[0];
+            child.setAttribute("src","/pictures/icon/downBlue.svg");
+            e.childNodes[3].style.minWidth = "20px";
+            e.childNodes[3].style.marginTop = "20px";
+            bul = false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/logo/logo.svg" type="image/icon type">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('./admin.ejs') %>
+    <div class="adminContainer">
+        <div class="main">
+            <div class="pageHeader">
+                <span>
+                    <%= name %> 
+                </span>
+            </div>
+        </div>
+    <form action="/admin/tstb" method="POST" id="identifier">
+        <div class="adminTable">
+            <div class="formInputs addHabar form1" >
+                <div class="box">
+                    <div class="boxHeader">Türkmençe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="headtm">Mazmunyň headeri:</label>
+                        <input type="text" id="headtm" name="headerTM" class="header tm inputs" value="<%= data.header.tm[0]%>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <textarea id="image-tools"></textarea>
+                    </div>
+                
+                </div>
+                <div class="box imgBox">
+                    <div class="boxHeader">Suraty giriziň</div>
+                    <div class="mazmun">Suraty giriziň:</div>
+                    <div class="inputs">
+                        <p><input type="file"  accept="image/*" name="image" id="img0" onchange="loadFile(event,0)" class="1" style="display: none;"></p>
+                        <label class="imgLbCon" for="img0"><img id="output" src="/pictures/icon/addPicture.svg" /></label>
+                    </div>
+                    
+                
+                </div>
+                <div class="box">
+                    <div class="boxHeader">Rusça giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="headru">Mazmunyň headeri:</label>
+                        <input type="text" name="headerRU" id="headru" class="header ru inputs" value="<%=data.header.ru[0]%>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <textarea id="image-tools2"></textarea>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="boxHeader">Iňlisçe giriziň</div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="headen">Mazmunyň headeri:</label>
+                        <input type="text" name="headerEN" id="headen" class="header en inputs" value="<%= data.header.en[0] %>" required>
+                    </div>
+                    <div class="mazmun">Mazmuny:</div>
+                    <div class="editorCon">
+                        <textarea id="image-tools3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submitCon">
+                <div class="more" onclick="moreBtn()" style="display: none;">Ýene maglumat goşmak</div>
+                <input class="save" type="submit" value="Ýatda sakla">
+            </div>
+        </div>
+    </form>
+
+    <div style="display: none;" class="hide"></div>
+    <div style="display: none;" class="hide2"></div>
+    <div style="display: none;" class="hide3"></div>
+    </div>
+    <div class="txt" style="display: none;"><%= data.body.tm[0] %></div>
+    <div class="txt" style="display: none;"><%= data.body.ru[0] %></div>
+    <div class="txt" style="display: none;"><%= data.body.en[0] %></div>
+
+
+    <!-- for left dropdown -->
+    <script>dropActive(2,1);</script>
+
+    <!-- when page loaded picture put input -->
+    <script>
+        var pic = document.querySelectorAll(".imgLbCon");
+        var oldimg = '<%=data.pic%>';
+        
+        pic[0].childNodes[0].setAttribute('src',`<%=host%>/menu/${oldimg}`);
+        pic[0].childNodes[0].setAttribute("width","100%");
+        pic[0].childNodes[0].setAttribute("height","100%");
+    </script>
+
+    <!-- Formdan maglumat jemlemek -->
+    <script>
+        var form = document.querySelector("#identifier");
+        var id = '<%=data.id%>'
+        var img;
+        var loadFile = function(event,el) {
+            var image = document.querySelector('#output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.width = "100%";
+            image.style.height = "100%";
+            img = document.querySelector(".inputs p input");
+            img = img.files[0];
+        }; 
+
+        var oneTime = true;
+        form.addEventListener("submit",async function(e){
+            e.preventDefault();
+            if(oneTime){
+                oneTime = false;
+                var inputs = document.querySelectorAll("#identifier .inputs");
+                console.log(inputs);
+
+                var content = tinymce.get("image-tools").getContent();
+                var content2 = tinymce.get("image-tools2").getContent();
+                var content3 = tinymce.get("image-tools3").getContent();
+
+                var data = {
+                    text: [content],
+                    text2: [content2],
+                    text3: [content3],
+                    bosh:[],
+                    tmheader:[inputs[0].value],
+                    ruheader:[inputs[2].value],
+                    enheader:[inputs[3].value]
+                }
+
+                
+    
+                var arr = [];
+                if(img !== undefined){
+                    arr.push(img);
+                }
+                
+                var res = await dataSend(data,'<%=host%>/menu/editAboutUs');
+                if(typeof(res.id) == 'number'){
+                    console.log(140)
+                    if(arr.length>0){
+                        console.log(arr);
+                        var data = await imgSend(arr,'<%=host%>/menu/addPic?id='+res.id);
+                        if(data.status == 200){
+                            alert("Ýatda saklandy suratam uytgedildi")
+                            oneTime = true
+                        }
+                    }else{
+                        console.log(148)
+                        alert("Ýatda saklandy");
+                        oneTime = true;
+                    }
+                }else{
+                    console.log("Error have")
+                    oneTime = true;
+                }
+            }
+        })
+
+    </script>
+
+    <script src='https://cdn.tiny.cloud/1/hpf9h4802a6gu20q61xonxq5tg2r8ot8qw5bmkjuseuw4s9i/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+    <script src="/scripts/js/component/tinyEdit.js"></script>
+    <script>
+        var text = document.querySelectorAll(".txt");
+        setData(text[0].textContent,text[1].textContent,text[2].textContent);
+    </script>
+</body>
+</html>
