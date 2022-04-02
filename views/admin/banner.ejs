@@ -22,13 +22,13 @@
                     <td>Uytget</td>
                     <td>Pozmak</td>
                   </tr>
-                <% if(data.length>0){ %> 
-                <% for( let i = 0; i < data.length; i++ ) { %>
+                <% if(data.banners.length>0){ %> 
+                <% for( let i = 0; i < data.banners.length; i++ ) { %>
                     <tr>  
                         <td style="max-width: 400px;"><%=i+1%></td>
-                        <td><a href="/<%= link %>/getOne/<%=data[i].banner_id%>"><img style="width: 100px" src="http://localhost:5001/<%=data[i].image%>" alt="surat yok"></a></td>
-                        <td><a href="/<%= link %>/edit/<%=data[i].banner_id%>"><img style="width: 25px" src="/pictures/icon/edit.svg" alt=""></a></td>
-                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/banners/delete/<%=data[i].banner_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
+                        <td><a href="/<%= link %>/getOne/<%=data.banners[i].banner_id%>"><img style="width: 100px" src="http://localhost:5001/<%=data.banners[i].image%>" alt="surat yok"></a></td>
+                        <td><a href="/<%= link %>/edit/<%=data.banners[i].banner_id%>"><img style="width: 25px" src="/pictures/icon/edit.svg" alt=""></a></td>
+                        <td style="cursor:pointer" onclick="del('http://localhost:5001/admin/banners/delete/<%=data.banners[i].banner_id%>')"><img style="width: 25px" src="/pictures/icon/delete.svg"></td>
                     </tr>
                     <% }} %>
                 </tbody>

@@ -24,6 +24,21 @@
         ::placeholder{
             color:#fff;
         }
+
+        .extraInputs{
+            display: block !important;
+        }
+        .select{
+            display:flex;
+        }
+        .select input{
+            margin-right:10px;
+            margin-bottom: 10px;
+        }
+        .select select{
+            width:90% !important;
+            margin-right: 10px !important;
+        }
     </style>
 </head>
 
@@ -55,23 +70,27 @@
                     </div>
                     <div class="extraInputs" style="justify-content: space-between;">
                             <div for="" class="select" style="width: auto; margin-right: 20px;">
-                                <div style="float: none; min-width: 100%;">
-                                    Kategorya saylan:
+                                <div>
+                                    <div style="float: none; min-width: 100%;">
+                                        Kategorya saylan:
+                                    </div>
+                                    <select name="" id="category" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
+                                        <option value="" style="display: none;" selected>Kategorya saylan</option>
+                                        <% for( let i = 0; i < categories.length; i++ ) { %>
+                                            <option value="<%= categories[i].category_id %>"><%= categories[i].name_tm %></option>
+                                        <% } %>
+                                    </select>
                                 </div>
-                                <select name="" id="category" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
-                                    <option value="" style="display: none;" selected>Kategorya saylan</option>
-                                    <% for( let i = 0; i < categories.length; i++ ) { %>
-                                        <option value="<%= categories[i].category_id %>"><%= categories[i].name_tm %></option>
-                                    <% } %>
-                                </select>
+                                <div>
+                                    <div style="float: none; min-width: 100%;">
+                                        Subkategorya saylan:
+                                    </div>
+                                    <select name="" id="subcategory" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
+                                        <option value="" style="display: none;" selected>Subkategorya saylan</option>
+                                    </select>
+                                </div>
                             </div>
                             <div for="" class="select" style="width: auto; margin-right: 20px;">
-                                <div style="float: none; min-width: 100%;">
-                                    Subkategorya saylan:
-                                </div>
-                                <select name="" id="subcategory" required class="welayatSelect" style="margin-top: 10px; margin-bottom: 0; width: auto; padding:7px 5px 5px">
-                                    <option value="" style="display: none;" selected>Subkategorya saylan</option>
-                                </select>
                                 <input class="inputs" placeholder="Haryt sany" type="number" min="0" style="background: #585962;color: #fff; height: 22px;outline: none;">
                                 <input type="number" class="inputs" placeholder="Bahasy" min="1" style="background: #585962;color: #fff; height: 22px;outline: none;">
                             </div>

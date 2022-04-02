@@ -5,7 +5,6 @@ require("dotenv").config({path:"./config/config.env"});
 const path = require('path')
 const host = process.env.HOST;
 const hostiso = process.env.HOSTISO;
-
 const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
@@ -28,9 +27,11 @@ app.get("/",function(req,res){
   res.render("pages/login",{host:localHost})
 })
 app.get("/products/active",async function(req,res){
-  let data
+  let data,count
+  const limit=req.query.limit || 20
+  const page=req.query.page || 0
   try{
-    data = await axios.get(`${localHost}/admin/products/active`);
+    data = await axios.get(`${localHost}/admin/products/active?limit=${limit}&page=${page}`);
   }catch(error){
     console.log(error)
   }
@@ -181,7 +182,7 @@ app.get("/banners/getOne/:id",async(req,res)=>{
   } catch (err) {
     res.send(err)
   }
-  res.render("admin/bannerProducts",{name:"Banner harytlary",link:"banners/products/"+req.params.id,host:localHost,data:data.data})
+  res.render("admin/bannerProducts",{name:"Banner harytlary",link:"banners/products/"+req.params.id,host:localHost,data:data.data.banner})
 })
 app.get("/banners/edit/:id",async(req,res)=>{
   let data
@@ -195,6 +196,7 @@ app.get("/banners/edit/:id",async(req,res)=>{
 app.get("/banners/products/:id/add",async(req,res)=>{
   res.render("admin/toAdd/addBannerProduct",{name:"Bannere haryt gosh",link:"banners/",host:localHost,id:req.params.id})
 })
+app.get
 // search
 app.post("/admin/:page/search",async function(req,res){
   var page = req.params.page;
@@ -261,242 +263,6 @@ app.post("/admin/:page/search",async function(req,res){
   console.log(data.data)
   res.render(`admin/${ejs}`,{data:data.data,name:page,host:host,hostiso});
   
-})
-
-// page post
-
-app.post("/admin/:page",function(req,res){
-  var page = req.params.page;
-  if(page == "subConstructor"){
-    var nomer = req.body.shablon;
-    console.log(req.body);
-    banner=nomer
-    if(nomer == 1){
-      res.render("admin/toAdd/shablon/shablon1",{data:req.body,name:"Sub Constructor",id:constructorId,host,hostiso});
-    }else if(nomer == 2){
-      res.render("admin/toAdd/shablon/shablon2",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso});
-    }else if(nomer == 3){
-      res.render("admin/toAdd/shablon/shablon3",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso});
-    }else if(nomer == 4){
-      res.render("admin/toAdd/shablon/shablon4",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso})
-    }else if(nomer == 5){
-      res.render("admin/toAdd/shablon/shablon5",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso})
-    }else if(nomer == 6){
-      res.render("admin/toAdd/shablon/shablon6",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso})
-    }else if(nomer == 7){
-      res.render("admin/toAdd/shablon/shablon7",{data:req.body,name:"Sub Constructor",host,id:constructorId,hostiso})
-    }
-  }else if(page == "subConstructor2"){
-    console.log("Shablondan Maglumat geldi"+constructorId);
-    console.log(req.body);
-    res.redirect(`/admin/subConstructor/${constructorId}`)
-  }
-})
-
-
-
-
-
-
-// page add
-app.get("/admin/:page/add",async function(req,res){
-  var page = req.params.page;
-  var data;
-  if(page == 'Habarlar'){
-    try{
-      data = await axios.get(`${localHost}/news/tag`);
-      res.render("admin/toAdd/addHabarlar",{tag:data.data,name : page+" goşmak",host,hostiso});
-    }catch(error){
-      res.send(error);
-    }
-    
-  }else if(page == "Bildirişler"){
-    try{
-      data = await axios.get(`${localHost}/events/tag`);
-      res.render("admin/toAdd/addBildirishler",{tag:data.data,name : "Bildiriş goşmak",host,hostiso});
-    }catch(error){
-      res.send(error);
-    }
-
-  }else if(page == "Gazetler"){
-    res.render("admin/toAdd/addGazetler",{name:"Gazet goşmak",host,hostiso})
-  }else if(page == "Pudaklar"){
-    res.render("admin/toAdd/addPudaklar",{name:"Pudak goşmak",host,hostiso})
-  }else if(page == "Kärhanalar"){
-    res.render("admin/toAdd/addKarhanalar",{name:"Kärhana goşmak",host,id:pudakId,hostiso})
-  }else if(page == "Internet Söwda"){
-    try{
-      data = await axios.get(`${localHost}/commerce/getCategorySimple`);
-      console.log(data.data);
-      res.render("admin/toAdd/addInternetSowda",{tag:data.data,name:"Internet Söwda goşmak",host,hostiso})
-    }catch(error){
-      res.send(error);
-    }
-  }else if(page == "Iş meýilnamasy"){
-    res.render("admin/toAdd/addPlans",{name:"Iş meýilnamasyny goşmak",host,hostiso})
-  }else if(page == "Ygtyýarnama"){
-    res.render("admin/toAdd/addLisense",{name:"Ygtyýarnama goşmak",host,hostiso})
-  }else if(page == "TSTB agzalary"){
-    res.render('admin/toAdd/addKompaniyalar',{name:"TSTB agza goşmak",host,hostiso});
-  }else if(page == "Partniýorlar"){
-    res.render("admin/toAdd/addPartniyorlar",{name:"Partniýor goşmak",host,hostiso})
-  }else if(page == "1-nji banner"){
-    res.render("admin/toAdd/addBanner1",{name : "Banner 1-a goşmak",host,hostiso});
-  }else if(page == "2-nji banner"){
-    res.render("admin/toAdd/addBanner2",{name:"2-nji bannere goşmak",host,hostiso})
-  }else if(page == "3-nji banner"){
-    res.render("admin/toAdd/addBanner3",{name:"3-nji bannere goşmak",host,hostiso})
-  }else if(page == "Constructor kategoriýalar"){
-    res.render("admin/toAdd/addConstructorKategori",{host,name:"Constructor kategoriýa goşmak",hostiso})
-  }else if(page == "Sub constructorlar"){
-    console.log(constructorId)
-    res.render("admin/toAdd/addSubConstructor",{name:"Sub constructor goşmak",hostiso})
-  }
-})
-
-
-
-// page edit
-app.get("/admin/:page/edit/:id",async function(req,res){
-  var page = req.params.page;
-  var id = req.params.id;
-  var data;
-  if(page == "habarlar"){
-    try{
-      data = await axios.get(`${localHost}/news/getOne?id=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editHabarlar",{data:data.data[0],tags:data.data[1],name:"Habarlar üýtgetmek",host:host});
-  }else if(page == 'bildirishler'){
-    try{
-      data = await axios.get(`${localHost}/events/getOne?id=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    res.render("admin/toEdit/editBildirishler",{data:data.data[0],tags:data.data[1],name:"Bildiriş üýtgetmek",host:host});
-  }else if(page == 'gazetlar'){
-    try{
-      data = await axios.get(`${localHost}/newspapers/getOne?id=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data);
-    res.render("admin/toEdit/editGazetlar",{data:data.data,name:"Gazet üýtgetmek",host:host});
-  }else if (page == 'banner1'){
-    try{
-      data = await axios.get(`${localHost}/banners/getOneBanner?id=1&index=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editBanner1",{data:data.data,index:req.params.id,name:"1-nji banneri üýtgetmek",host:host});
-  }else if (page == 'banner2'){
-    try{
-      data = await axios.get(`${localHost}/banners/getOneBanner?index=${id}&id=2`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editBanner2",{data:data.data,index:req.params.id,name:"2-nji banneri üýtgetmek",host});
-  }else if (page == 'banner3'){
-    try{
-      data = await axios.get(`${localHost}/banners/getOneBanner?index=${id}&id=3`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editBanner3",{data:data.data,index:req.params.id,name:"3-nji banneri üýtgetmek",host});
-  }else if(page == 'kompaniyalar'){
-    try{
-      data = await axios.get(`${localHost}/members/getOne?id=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editKompaniyalar",{data:data.data,id:req.params.id,name:"Kompaniýa üýtgetmek",host});
-  }else if(page == 'internetSowda'){
-    try{
-      data = await axios.get(`${localHost}/commerce/getOne?id=${id}`);
-    }catch(error){
-      console.log(error)
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editInternetSowda",{data:data.data[0],tag:data.data[1],id:req.params.id,name:"Internet Söwdany üýtgetmek",host});
-  }else if(page == 'ishMeyilnamasy'){
-    try{
-      data = await axios.get(`${localHost}/menu/getOneBussiness?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render('admin/toEdit/editPlans',{data:data.data,name:"Iş meýilnamasyny üýtgetmek",host});
-  }else if(page == 'ygtyyarnama'){
-    try{
-      data = await axios.get(`${localHost}/menu/getOneLicense?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render('admin/toEdit/editLisense',{data:data.data,name:"Ygtyýarnama üýtgetmek",host});
-  }else if(page == "pudaklar"){
-    try{
-      data = await axios.get(`${localHost}/industry/getOne?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editPudaklar",{data:data.data,host,name:"Pudaklar üýtgetmek"});
-  }else if(page == "karhanalar"){
-    try{
-      data = await axios.get(`${localHost}/industry/subCategory?index=${id}&id=${pudakId}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render("admin/toEdit/editKarhanalar",{data:data.data,name:"Karhanalar üýtgetmek",host,index:id,id:pudakId});
-  }else if(page == 'partniyorlar'){
-    try{
-      data = await axios.get(`${localHost}/sponsor/getOne?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render('admin/toEdit/editPartniyorlar',{data:data.data,host,name:'Partniýorlar üýtgetmek'})
-  }else if(page == 'constructorKategori'){
-    try{
-      data = await axios.get(`${localHost}/constructor/getOneSimple?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    res.render('admin/toEdit/editConstructorKategori',{data:data.data,host,name:'Constructor kategory üýtgetmek',id})
-  }else if(page == 'subConstructor'){
-    try{
-      data = await axios.get(`${localHost}/constructor/subCategory/getOne?id=${id}`);
-    }catch(e){
-      console.log(e);
-    }
-    console.log(data.data);
-    var sh = Number(data.data.page);
-    var name = 'Constructor kategory üýtgetmek'
-    if(sh == 1){
-      res.render('admin/toEdit/shablon/shablon1',{data:data.data,host,name,id})
-    }else if(sh == 2){
-      res.render('admin/toEdit/shablon/shablon2',{data:data.data,host,name,id})
-    }else if(sh == 3){
-      res.render('admin/toEdit/shablon/shablon3',{name,data:data.data,host,id})
-    }else if(sh == 4){
-      res.render('admin/toEdit/shablon/shablon4',{name,data:data.data,host,id})
-    }else if(sh == 5){
-      res.render('admin/toEdit/shablon/shablon5',{name,data:data.data,host,id})
-    }else if(sh == 6){
-      res.render('admin/toEdit/shablon/shablon6',{name,data:data.data,host,id})
-    }else if(sh == 7){
-      res.render('admin/toEdit/shablon/shablon7',{name,data:data.data,host,id})
-    }
-  }
 })
 //Server Start
 app.listen("80",function(){
