@@ -11,7 +11,6 @@ app.use(express.urlencoded({extended:true}));
 app.set("view engine","ejs");
 app.use(express.static("public"))
 app.use('/css',express.static(path.join(__dirname,"public","style")));
-// app.use('/font',express.static(path.join(__dirname,"public","style")));
 app.use('/js',express.static(path.join(__dirname,"public","scripts")));
 app.use('/img',express.static(path.join(__dirname,"public","pictures")));
 const localHost = 'http://localhost:5001'
@@ -28,23 +27,27 @@ app.get("/",function(req,res){
 })
 app.get("/products/active",async function(req,res){
   let data,count
-  const limit=req.query.limit || 20
-  const page=req.query.page || 0
+  const limit=20
+  const page=Number(req.query.page) || 1
   try{
     data = await axios.get(`${localHost}/admin/products/active?limit=${limit}&page=${page}`);
   }catch(error){
     console.log(error)
   }
-  res.render("admin/products",{name:"active products",data:data.data,host:localHost,link:"products"});
+  let allpages=Math.floor(data.data.count/limit)+1
+  res.render("admin/products",{name:"active products",data:data.data.products,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"products",which:"active"});
 })
 app.get("/products/not-active",async function(req,res){
   let data
+  const limit=20
+  const page=req.query.page || 1
   try{
-    data = await axios.get(`${localHost}/admin/products/non-active`);
+    data = await axios.get(`${localHost}/admin/products/active?limit=${limit}&page=${page}`);
   }catch(error){
     console.log(error)
   }
-  res.render("admin/products",{name:"not active products",data:data.data,host:localHost,link:"products"})
+  let allpages=Math.floor(data.data.count/limit)+1
+  res.render("admin/products",{name:"not active products",data:data.data.products,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"products"})
 })
 app.get("/products/add",async function(req,res){
   let data
@@ -66,13 +69,16 @@ app.get("/products/getOne/:id",async function (req, res){
   res.render("admin/toEdit/editProducts",{name:"Edit products",data:data.data,host:localHost,categories:categories.data})
 })
 app.get("/seller",async function(req,res){
-  let data
+  let data,count
+  const limit=20
+  const page=Number(req.query.page) || 1
   try{
-    data = await axios.get(`${localHost}/admin/seller`);
+    data = await axios.get(`${localHost}/admin/seller?limit=20&page=${page}`);
   }catch(error){
     console.log(error)
   }
-  res.render("admin/sellers",{name:"Satyjylar",data:data.data,host:localHost,link:"seller"})
+  let allpages=Math.floor(data.data.count/limit)+1
+  res.render("admin/sellers",{name:"Satyjylar",data:data.data,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"seller",which:page})
 })
 app.get("/seller/add",async(req,res)=>{
   res.render("admin/toAdd/addSeller",{name:"Satyjy gosh",host:localHost,link:"seller"})
@@ -146,13 +152,16 @@ app.get("/subcategories/edit/:id",async(req,res)=>{
   res.render("admin/toEdit/editSubcategory",{name:"Subkategoriya gosh",host:localHost,category_id:category_id,data:data.data})
 })
 app.get("/orders",async(req,res)=>{
-  let data
+  let data,count
+  const limit=20
+  const page=Number(req.query.page) || 1
   try{
-    data = await axios.get(`${localHost}/admin/orders`);
+    data = await axios.get(`${localHost}/admin/orders?page=${page}`);
   }catch(error){
     console.log(error)
   }
-  res.render("admin/orders",{name:"Zakazlar",data:data.data,host:localHost,link:"orders"});
+  let allpages=Math.floor(data.data.count/limit)+1
+  res.render("admin/orders",{name:"Zakazlar",data:data.data,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"orders",which:page});
 })
 app.get("/orders/:id",async(req,res)=>{
   let data

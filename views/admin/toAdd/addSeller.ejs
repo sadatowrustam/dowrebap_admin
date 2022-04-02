@@ -59,7 +59,7 @@
         e.preventDefault();
         var inputs = document.querySelectorAll("#identifier input");
         var data = {
-            name:inputs[0].value,
+            number:inputs[0].value,
             password:inputs[1].value,
         }
         var res = await dataSend(data,'<%=host%>/admin/seller/add');

@@ -69,6 +69,17 @@
                     <% }} %>
                 </tbody>
               </table>
+              <div style="margin-left:50%" class="pagination">
+                <% if (page!=1) { %>
+                  <span><a style="text-decoration:none;color:#DDE2FF" href="/products/<%=which%>?page=<%=Number(page)-1%>"><</a></span>
+                <% } %>
+                  <span><%=page%> of <%= allpages %> </span>
+                <% if (page!=allpages) { %>
+                  <span><a style="text-decoration:none;color:#DDE2FF" href="/products/<%=which%>?page=<%=Number(page)+1%>">></a></span>
+                <% } %>
+                <input type="number" name="" min="1" max="<%= allpages %>" id="number">
+                <input type="submit" value="Git" id="submit">
+            </div>
         </div>
     </div> 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -91,6 +102,19 @@
                     alert("uytgedildi")
                 }
             })
+        })
+        let submit=document.querySelector("#submit")
+        let page=document.querySelector("#number")
+        let currentPage="<%=page%>"
+        let allpages="<%=allpages%>"
+        let which="<%=which%>"
+        
+        submit.addEventListener("click",function(){
+            if (currentPage<0 || allpages<page.value){
+                alert("Dogry sahypa girizin")
+            }else{
+                location.replace(`/seller/${which}?page=${page.value}`)
+            }
         })
     </script>
 </body>
