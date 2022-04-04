@@ -73,7 +73,10 @@ span.psw {
               console.log(res)
               if(res.token){
                 localStorage.setItem('admin-token',res.token)
-                location.replace("/products/active")                  
+                let token=await defaultHeader(res.token)
+                if(token.status){
+                  location.replace("/products/active")                  
+                }
               }else{
                   alert("Parol ya-da username yalnysh")
               

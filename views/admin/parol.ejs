@@ -24,10 +24,18 @@
                 <div class="box">
                     <div class="headerCon">
                         <label class="mazmuny" for="headtm">Täze adyňyzy giriziň:</label>
+                        <input type="text" id="headtm" name="headerTM" class="header tm" value="<%= username %>" required>
+                    </div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="headtm">Onki parolyňy giriziň:</label>
                         <input type="text" id="headtm" name="headerTM" class="header tm" required>
                     </div>
                     <div class="headerCon">
-                        <label class="mazmuny" for="headtm">Täze parolyňy giriziň:</label>
+                        <label class="mazmuny" for="headtm">Täze parolyňyzy giriziň:</label>
+                        <input type="text" id="headtm" name="headerTM" class="header tm" required>
+                    </div>
+                    <div class="headerCon">
+                        <label class="mazmuny" for="headtm">Täze parolyňyzy giriziň:</label>
                         <input type="text" id="headtm" name="headerTM" class="header tm" required>
                     </div>
                 </div>
@@ -49,14 +57,19 @@
                 oneTime = false;
                 var inputs = document.querySelectorAll("#identifier input");
                 var data = {
-                    name:inputs[0].value,
-                    password:inputs[1].value
+                    username:inputs[0].value,
+                    password:inputs[1].value,
+                    newPassword:inputs[2].value,
+                    newPasswordConfirm:inputs[3].value
                 }
-                var res = await dataSend(data,'<%=host%>/login/edit');
-                console.log(res);
-                if(res.status == 200){
-                    alert("Üýtgedildi");
-                    oneTime = true;
+                var res = await dataSend(data,'<%=host%>/admin/edit');
+                if(res.token){
+                    localStorage.setItem("admin-token",res.token)
+                    let result=await defaultHeader(res.token)
+                    console.log(result)
+                    if(result.status){
+                        alert('Parol uytgedildi')
+                    }
                 }
             }
         })

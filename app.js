@@ -25,6 +25,10 @@ app.use(function (req, res, next) {
 app.get("/",function(req,res){
   res.render("pages/login",{host:localHost})
 })
+app.post("/update-token",async(req,res)=>{
+  axios.defaults.headers['authorization'] = "Bearer "+req.body.token;
+  return res.send({status:"success"})
+})
 app.get("/products/active",async function(req,res){
   let data,count
   const limit=20
@@ -47,7 +51,7 @@ app.get("/products/not-active",async function(req,res){
     console.log(error)
   }
   let allpages=Math.floor(data.data.count/limit)+1
-  res.render("admin/products",{name:"not active products",data:data.data.products,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"products"})
+  res.render("admin/products",{name:"not active products",data:data.data.products,count:data.data.count,page:page,allpages:allpages,host:localHost,link:"products",which:"not-active"})
 })
 app.get("/products/add",async function(req,res){
   let data
@@ -205,7 +209,11 @@ app.get("/banners/edit/:id",async(req,res)=>{
 app.get("/banners/products/:id/add",async(req,res)=>{
   res.render("admin/toAdd/addBannerProduct",{name:"Bannere haryt gosh",link:"banners/",host:localHost,id:req.params.id})
 })
-app.get
+app.get("/parol",async(req,res)=>{
+  let data=await axios.get(`${localHost}/admin/get-me`)
+
+  res.render("admin/parol",{name:"Parol calyshmak",host:localHost,username:data.data.username})
+})
 // search
 app.post("/admin/:page/search",async function(req,res){
   var page = req.params.page;

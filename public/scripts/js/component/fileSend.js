@@ -95,3 +95,18 @@ async function del(link){
     }
 
 }
+async function defaultHeader(token){
+    const data={token}
+    const option={
+        method:"POST",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            'Content-Type':"application/json",
+            'Access-Control-Request-Private-Network': true,
+        })
+    }
+    const link="http://localhost:80/update-token"
+    var status = await fetch(link,option);
+    console.log(status)
+    return status.json();
+}

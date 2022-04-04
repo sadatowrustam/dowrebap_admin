@@ -70,9 +70,11 @@
         if (currentPage<0 || allpages<page.value){
             alert("Dogry sahypa girizin")
         }else{
-            location.replace(`/seller/${which}?page=${page.value}`)
+            location.replace(`/products/${which}?page=${page.value}`)
         }
     })
     </script>
+    <script>dropActive(0,2);</script>
+
 </body>
 </html>
